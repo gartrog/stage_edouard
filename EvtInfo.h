@@ -84,6 +84,35 @@ struct TruthInfo {
     else if(type == 15) { res << "tau"; }
     return res.str();
   }
+
+  std::string category() {
+    if(isFullHad()) { return "FullHad"; }
+    if(isSemiLep()) {
+      switch(leps_types[0]) {
+      case 11:
+        return "e";
+      case 13:
+        return "mu";
+      case 15:
+        return "tau";
+      }
+    }
+    switch(leps_types[0]+leps_types[1]) {
+      case 22:
+        return "e-e";
+      case 24:
+        return "e-mu";
+      case 28:
+        return "mu-tau";
+      case 30:
+        return "tau-tau";
+      case 26:
+        if(leps_types[0] == 13) {
+          return "mu-mu";
+        }
+        return "e-tau";
+    }
+  }
 };
 
 #endif

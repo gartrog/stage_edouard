@@ -12,6 +12,7 @@ VHAnalysis::VHAnalysis(TTree* tree, const std::string& outfname) :
   m_outfile(outfname, "recreate"),
   m_kinVariables(),
   m_truthLeptons(),
+  m_truthCompo(),
   m_btag()
 {
 
@@ -32,6 +33,10 @@ void VHAnalysis::InitializeHistograms() {
 
   m_truthLeptons.addHisto("leppT;p_{T} [GeV]", {40, 0, 100});
   m_truthLeptons.addHisto("lepeta;#eta", {40, -5, 5});
+
+  std::vector<std::string> categories {"FullHad", "e", "mu", "tau", "e-e", "e-mu",
+                                             "mu-mu", "e-tau", "mu-tau", "tau-tau"};
+  m_truthCompo.addHisto("compo;Categories", categories);
 }
 
 void VHAnalysis::Loop() {
@@ -213,6 +218,7 @@ void VHAnalysis::WriteHistos() {
 
   m_kinVariables.saveHists(&(*m_outfile));
   m_truthLeptons.saveHists(&(*m_outfile));
+  m_truthCompo.saveHists(&(*m_outfile));
 }
 
 void VHAnalysis::StudyMCLeptons(EvtInfo& evt) {
@@ -237,6 +243,9 @@ void VHAnalysis::StudyMCLeptons(EvtInfo& evt) {
     m_truthLeptons.fillCurrent("leppT", truth.leps[i].Pt(), evt.total_weight());
     m_truthLeptons.fillCurrent("lepeta", truth.leps[i].Eta(), evt.total_weight());
   }
+
+  m_truthCompo.fill("all_compo", truth.category(), evt.total_weight());
+  m_truthCompo.fill(evt.kin_prefix()+"_compo", truth.category(), evt.total_weight());
 
 }
 

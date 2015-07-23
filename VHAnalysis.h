@@ -25,6 +25,7 @@ class VHAnalysis : public VHNtuple {
 
     Histos m_kinVariables;
     Histos m_truthLeptons;
+    Histos m_truthCompo;
 
     BTagging m_btag;
 
