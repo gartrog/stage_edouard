@@ -53,7 +53,7 @@ void VHAnalysis::Loop() {
       Long64_t ientry = LoadTree(jentry);
       if (ientry < 0) break;
       nb = fChain->GetEntry(jentry);   nbytes += nb;
-      if(jentry%10000 == 0) {
+      if(jentry%100000 == 0) {
         std::cout << "Processing entry: " << jentry << std::endl;
       }
       ProcessEntry(jentry);
