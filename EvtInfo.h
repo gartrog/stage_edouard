@@ -58,4 +58,32 @@ struct EvtInfo {
   }
 };
 
+struct TruthInfo {
+  std::vector<TLorentzVector> leps;
+  std::vector<int> leps_types;
+
+  bool isSemiLep() { return (leps.size() == 1); }
+  bool isDiLep() { return (leps.size() == 2); }
+  bool isFullHad() { return (leps.size() == 0); }
+
+  TruthInfo() :
+    leps(), leps_types()
+  {}
+
+  std::string prefix() {
+    if(isSemiLep()) { return "semiLep"; }
+    else if(isDiLep()) { return "diLep"; }
+    else { return "fullHad"; }
+  }
+
+  std::string prefix(int type) {
+    std::stringstream res;
+    res << prefix() << "_";
+    if(type == 11) { res << "e"; }
+    else if(type == 13) { res << "mu"; }
+    else if(type == 15) { res << "tau"; }
+    return res.str();
+  }
+};
+
 #endif

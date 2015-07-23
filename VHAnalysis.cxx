@@ -11,6 +11,7 @@ VHAnalysis::VHAnalysis(TTree* tree, const std::string& outfname) :
   VHNtuple(tree),
   m_outfile(outfname, "recreate"),
   m_kinVariables(),
+  m_truthLeptons(),
   m_btag()
 {
 
@@ -29,6 +30,8 @@ void VHAnalysis::InitializeHistograms() {
 
   m_kinVariables.addHisto("jet1pT;p_{T} [GeV]", {100, 0, 500});
 
+  m_truthLeptons.addHisto("leppT;p_{T} [GeV]", {40, 0, 100});
+  m_truthLeptons.addHisto("lepeta;#eta", {40, -5, 5});
 }
 
 void VHAnalysis::Loop() {
@@ -74,6 +77,8 @@ void VHAnalysis::ProcessEntry(Long64_t ientry) {
   DoBTagging(evt);
 
   PlotVariables(evt, "btag_");
+
+  StudyMCLeptons(evt);
 }
 
 bool VHAnalysis::ApplySelection(EvtInfo& evt) {
@@ -207,5 +212,31 @@ void VHAnalysis::WriteHistos() {
   m_cutflow->Write();
 
   m_kinVariables.saveHists(&(*m_outfile));
+  m_truthLeptons.saveHists(&(*m_outfile));
+}
+
+void VHAnalysis::StudyMCLeptons(EvtInfo& evt) {
+  TruthInfo truth;
+  std::vector<int> pos {6, 7, 8, 9};
+  std::vector<int> leps_pdgIds {11, 13, 15};
+
+  for(auto p : pos) {
+    int pdgid = abs(mc_pdg->at(p));
+    for(auto id : leps_pdgIds) {
+      if(pdgid == id) {
+        truth.leps_types.push_back(pdgid);
+        TLorentzVector tlv;
+        tlv.SetPxPyPzE(mc_px->at(p)/1.e3, mc_py->at(p)/1.e3, mc_pz->at(p)/1.e3, mc_E->at(p)/1.e3);
+        truth.leps.push_back(tlv);
+      }
+    }
+  }
+
+  for(unsigned int i = 0; i < truth.leps.size(); i++) {
+    m_truthLeptons.setCut(truth.prefix(truth.leps_types.at(i)));
+    m_truthLeptons.fillCurrent("leppT", truth.leps[i].Pt(), evt.total_weight());
+    m_truthLeptons.fillCurrent("lepeta", truth.leps[i].Eta(), evt.total_weight());
+  }
+
 }
 
