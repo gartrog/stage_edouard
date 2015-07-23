@@ -8,7 +8,9 @@
 
 VHAnalysis::VHAnalysis(TTree* tree, const std::string& outfname) :
   VHNtuple(tree),
-  m_outfile(outfname, "recreate")
+  m_outfile(outfname, "recreate"),
+  m_kinVariables(),
+  m_btag()
 {
 
   InitializeHistograms();
@@ -23,6 +25,8 @@ void VHAnalysis::InitializeHistograms() {
 
   m_cutflow = new TH1F("cutflow", "cutflow", 20, -0.5, 19.5);
   m_cutflow->SetDirectory(0);
+
+  m_kinVariables.addHisto("jet1pT;p_{T} [GeV]", {100, 0, 500});
 
 }
 
@@ -55,6 +59,11 @@ void VHAnalysis::ProcessEntry(Long64_t ientry) {
 
   if(!res) { return; }
 
+  PlotVariables(evt, "pretag_");
+
+  DoBTagging(evt);
+
+  PlotVariables(evt, "btag_");
 }
 
 bool VHAnalysis::ApplySelection(EvtInfo& evt) {
@@ -127,11 +136,11 @@ bool VHAnalysis::ApplySelection(EvtInfo& evt) {
     evt.j3 = sigJets[2];
   }
   if(vetoJets.size() > 0) {
-    evt.j3 = vetoJets[1];
+    evt.j3 = vetoJets[0];
   }
 
   // let the EvtInfo fill itself the jet TLorentzVectors
-  evt.FillTLVs(jets_E, jets_pt, jets_phi, jets_eta);
+  evt.FillTLVs(jets_E, jets_pt, jets_phi, jets_eta, jets_truth);
   evt.met.SetPtEtaPhiM(met_pt/1.e3, 0, met_phi, 0);
 
   bool passSumPt = true;
@@ -163,10 +172,30 @@ bool VHAnalysis::ApplySelection(EvtInfo& evt) {
   return true;
 }
 
+void VHAnalysis::DoBTagging(EvtInfo& evt) {
+  float w1 = m_btag.getJetWeight(evt.jet1.Pt(), evt.jet1.Eta(), evt.type1);
+  float w2 = m_btag.getJetWeight(evt.jet2.Pt(), evt.jet2.Eta(), evt.type2);
+  evt.btag_weight = w1*w2;
+}
+
+void VHAnalysis::PlotVariables(EvtInfo& evt, const std::string& prefix) {
+  m_kinVariables.setCut(prefix);
+  FillPlots(evt);
+  m_kinVariables.setCut(prefix+evt.kin_prefix());
+  FillPlots(evt);
+}
+
+void VHAnalysis::FillPlots(EvtInfo& evt) {
+  m_kinVariables.fillCurrent("jet1pT", evt.jet1.Pt(), evt.total_weight());
+
+}
+
 void VHAnalysis::WriteHistos() {
   std::cout << "Writing histograms to the output file" << std::endl;
   m_outfile->cd();
 
   m_cutflow->Write();
+
+  m_kinVariables.saveHists(&(*m_outfile));
 }
 

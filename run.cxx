@@ -5,6 +5,7 @@
 
 int main(int argc, char** argv) {
   File f("smallttbar.root");
+  //File f("ttbar.root");
   TTree* tree = f.getObject<TTree>("tupletest");
   VHAnalysis analysis(tree, "output.root");
   analysis.Loop();
