@@ -5,6 +5,7 @@
 #include <vector>
 #include <TMath.h>
 #include <string>
+#include <TLorentzVector.h>
 
 VHAnalysis::VHAnalysis(TTree* tree, const std::string& outfname) :
   VHNtuple(tree),
