@@ -38,7 +38,7 @@ class VHAnalysis : public VHNtuple {
     TH1F* m_nelectron_aftercut;
     
     TH1F* m_nmuons_init;
-    TH1F* m_nmuon_aftercut;
+    TH1F* m_nmuons_aftercut;
     
     TH1F* m_MET_init;
     TH1F* m_MET_aftercut;
@@ -49,14 +49,14 @@ class VHAnalysis : public VHNtuple {
     TH1F* m_dphiMETMPT_init;
     TH1F* m_dphiMETMPT_aftercut;
     
-    TH1F* m_SigJets_init;
-    TH1F* m_SigJets_aftercut;
+    TH1F* m_nSigJets_init;
+    TH1F* m_nSigJets_aftercut;
     
     TH1F* m_SigJet1_pt_init;
     TH1F* m_SigJet1_pt_aftercut;
     
-    TH1F* m_SigVetoJets_init;
-    TH1F* m_SigVetoJets_aftercut;
+    TH1F* m_nSigVetoJets_init;
+    TH1F* m_nSigVetoJets_aftercut;
     
     TH1F* m_sumpt12_init;
     TH1F* m_sumpt12_aftercut;

@@ -27,29 +27,29 @@ VHAnalysis::~VHAnalysis() {
 void VHAnalysis::InitializeHistograms() {
 
 
-  m_nelectron_init = new TH1F( "m_nelectron_init", "m_nelectron_init;nb_electrons", 100, 0, 100);
-  m_nelectron_aftercut = new TH1F( "m_nelectron_aftercut", "m_nelectron_aftercut;nb_electrons", 100, 0,  100);
+  m_nelectron_init = new TH1F( "m_nelectron_init", "m_nelectron_init;nb_electrons", 100, 0, 1);
+  m_nelectron_aftercut = new TH1F( "m_nelectron_aftercut", "m_nelectron_aftercut;nb_electrons", 100, 0,  1);
 
   m_nmuons_init = new TH1F( "m_nmuons_init", "m_nmuons_init;nb_muons", 100, 0, 100);
-  m_nmuon_aftercut = new TH1F( "m_nmuon_aftercut", "m_nmuon_aftercut;nb_muons", 100, 0, 100);
-  
+  m_nmuons_aftercut = new TH1F( "m_nmuons_aftercut", "m_nmuons_aftercut;nb_muons", 100, 0, 100);
+
   m_MET_init = new TH1F( "m_MET_init", "m_MET_init;MET", 100, 0, 300e3);
   m_MET_aftercut = new TH1F( "m_MET_aftercut", "m_MET_aftercut;MET", 100, 0, 300e3);
-  
+
   m_MPT_init = new TH1F( "m_MPT_init", "m_MPT_init;MPT", 100, 0, 300e3);
   m_MPT_aftercut = new TH1F( "m_MPT_aftercut", "m_MPT_aftercut;MPT", 100, 0, 300e3);
-  
+
   m_dphiMETMPT_init = new TH1F( "m_dphiMETMPT_init", "m_dphiMETMPT_init;DeltaPhiMETMPT", 100, 0, 6.5);
   m_dphiMETMPT_aftercut = new TH1F( "m_dphiMETMPT_aftercut", "m_dphiMETMPT_aftercut;DeltaPhiMETMPT", 100, 0, 6.5);
-  
-  m_SigJets_init = new TH1F( "m_SigJets_init", "m_SigJets_init;nb_Jets", 100, 0, 10);
-  m_SigJets_aftercut = new TH1F( "m_SigJets_aftercut", "m_SigJets_aftercut;nb_Jets", 100, 0, 10);
-  
+
+  m_nSigJets_init = new TH1F( "m_nSigJets_init", "m_nnSigJets_init;nb_Jets", 100, 0, 10);
+  m_nSigJets_aftercut = new TH1F( "m_nSigJets_aftercut", "m_nSigJets_aftercut;nb_Jets", 100, 0, 10);
+
   m_SigJet1_pt_init = new TH1F( "m_SigJet1_pt_init", "m_SigJet1_pt_init;pt_Signal1", 100, 0, 300e3);
   m_SigJet1_pt_aftercut = new TH1F( "m_SigJet1_pt_aftercut", "m_SigJet1_pt_aftercut;pt_Signal1", 100, 0, 300e3);
-  
-  m_SigVetoJets_init = new TH1F( "m_SigVetoJets_init", "m_SigVetoJets_init;nb_Jets", 100, 0, 10);
-  m_SigVetoJets_aftercut = new TH1F( "m_SigVetoJets_aftercut", "m_SigVetoJets_aftercut;nb_Jets", 100, 0, 10);
+
+  m_nSigVetoJets_init = new TH1F( "m_nSigVetoJets_init", "m_nSigVetoJets_init;nb_Jets", 100, 0, 10);
+  m_nSigVetoJets_aftercut = new TH1F( "m_nSigVetoJets_aftercut", "m_nSigVetoJets_aftercut;nb_Jets", 100, 0, 10);
 
   m_sumpt12_init = new TH1F( "m_sumpt12_init", "m_sumpt12_init;sum_pt1pt2", 100, 0, 500e3);
   m_sumpt12_aftercut = new TH1F( "m_sumpt12_aftercut", "m_sumpt12_aftercut;sum_pt1pt2", 100, 0, 500e3);
@@ -63,20 +63,38 @@ void VHAnalysis::InitializeHistograms() {
   m_dRSigJet1SigJet2_init = new TH1F( "m_dRSigJet1SigJet2_init", "m_dRSigJet1SigJet2_init;DeltaRsig1sig2", 100, 0, 4.5);
   m_dRSigJet1SigJet2_aftercut = new TH1F( "m_dRSigJet1SigJet2_aftercut", "m_dRSigJet1SigJet2_aftercut;DeltaRsig1sig2", 100, 0, 4.5);
 
-  m_massdijet_init = new TH1F( "m_massdijet_init", "m_massdijet_init;massDijet", 100, 0, 250e3);
-  m_massdijet_aftercut = new TH1F( "m_massdijet_aftercut", "m_massdijet_aftercut;massDijet", 100, 0, 250e3);
+  m_massdijet_init = new TH1F( "m_massdijet_init", "m_massdijet_init;massDijet", 100, 0, 250);
+  m_massdijet_aftercut = new TH1F( "m_massdijet_aftercut", "m_massdijet_aftercut;massDijet", 100, 0, 250);
 
   m_cutflow = new TH1F("cutflow", "cutflow", 20, -0.5, 19.5);
   m_cutflow->SetDirectory(0);
 
   m_kinVariables.addHisto("jet1pT;p_{T} [GeV]", {100, 0, 500});
-  
+  m_kinVariables.addHisto("jet2pT;p_{T} [GeV]", {100, 0, 500});
+  m_kinVariables.addHisto("jet3pT;p_{T} [GeV]", {100, 0, 500});
+  m_kinVariables.addHisto("jet1eta;#eta [degrés]", {100, 0, 4});
+  m_kinVariables.addHisto("jet2eta;#eta [degrés]", {100, 0, 4});
+  m_kinVariables.addHisto("jet3eta;#eta [degrés]", {100, 0, 4});
+  m_kinVariables.addHisto("jet1thruth;flavor", {16, 0, 16});
+  m_kinVariables.addHisto("jet2thruth;flavor", {16, 0, 16});
+  m_kinVariables.addHisto("jet3thruth;flavor", {16, 0, 16});
+  m_kinVariables.addHisto("massj1j2;M [MeV]", {100, 0, 150/1000});
+  m_kinVariables.addHisto("massj1j2j3;M [MeV]", {100, 0, 150/1000});
+  m_kinVariables.addHisto("DeltaRj1j2;DetlaR", {100, 0, 4.5});
+  m_kinVariables.addHisto("DeltaPhij1j2;DetlaPhi [degrés]", {100, 0, 4.5});
+  m_kinVariables.addHisto("DeltaEtaj1j2;DetlaEta [degrés]", {100, 0, 4.5});
+  m_kinVariables.addHisto("DeltaPhiMETdijet;DetlaPhi [degrés]", {100, 0, 4.5});
+  m_kinVariables.addHisto("MET;MET [GeV]", {100, 0, 300});
+  m_kinVariables.addHisto("sum_pt1pt2MET; [GeV]", {100, 0, 300});
+  m_kinVariables.addHisto("sum_pt1pt2pt3MET; [GeV]", {100, 0, 300});
+  m_kinVariables.addHisto2D("jet1thruth_vs_jet2thruth;jet1thruth;jet2thruth", {16, 0, 16}, {16, 0, 16});
+  m_kinVariables.addHisto2D("jet1thruth_vs_jet3thruth;jet1thruth;jet3thruth", {16, 0, 16}, {16, 0, 16});
+  m_kinVariables.addHisto2D("jet2thruth_vs_jet3thruth;jset2thruth;jet3thruth", {16, 0, 16}, {16, 0, 16});
 
   m_truthLeptons.addHisto("leppT;p_{T} [GeV]", {40, 0, 100});
   m_truthLeptons.addHisto("lepeta;#eta", {40, -5, 5});
 
-  std::vector<std::string> categories {"FullHad", "e", "mu", "tau", "e-e", "e-mu",
-                                             "mu-mu", "e-tau", "mu-tau", "tau-tau"};
+  std::vector<std::string> categories {"FullHad", "e", "mu", "tau", "e-e", "e-mu", "mu-mu", "e-tau", "mu-tau", "tau-tau"};
   m_truthCompo.addHisto("compo;Categories", categories);
 }
 
@@ -135,7 +153,9 @@ bool VHAnalysis::ApplySelection(EvtInfo& evt) {
   for(bool b : *electrons_isVHL) {
     if(b) { nelectrons++; }
   }
+  m_nelectron_init->Fill(nelectrons);
   if(nLooseElectrons > 0) { return false; }
+  m_nelectron_aftercut->Fill(nelectrons);
 
   m_cutflow->Fill(1, evt.mc_weight);
 
@@ -143,20 +163,28 @@ bool VHAnalysis::ApplySelection(EvtInfo& evt) {
   for(bool b : *muons_isVHL) {
     if(b) { nmuons++; }
   }
+  m_nmuons_init->Fill(nmuons);
   if(nLooseMuons > 0) { return false; }
+  m_nmuons_aftercut->Fill(nmuons);
 
   m_cutflow->Fill(2, evt.mc_weight);
 
+  m_MET_init->Fill(met_pt);
   if(met_pt < 120e3) { return false; }
+  m_MET_aftercut->Fill(met_pt);
 
   m_cutflow->Fill(3, evt.mc_weight);
 
+  m_MPT_init->Fill(trackmet_pt);
   if(trackmet_pt < 30e3) { return false; }
+  m_MPT_aftercut->Fill(trackmet_pt);
 
   m_cutflow->Fill(4, evt.mc_weight);
 
   float dphiMETMPT = fabs(TVector2::Phi_mpi_pi(met_phi-trackmet_phi));
+  m_dphiMETMPT_init->Fill(dphiMETMPT);
   if(dphiMETMPT > TMath::Pi()/2) { return false; }
+  m_dphiMETMPT_aftercut->Fill(dphiMETMPT);
 
   m_cutflow->Fill(5, evt.mc_weight);
 
@@ -170,9 +198,10 @@ bool VHAnalysis::ApplySelection(EvtInfo& evt) {
       vetoJets.push_back(i);
     }
   }
-
+  m_nSigJets_init->Fill(sigJets.size() + vetoJets.size());
   if(sigJets.size() < 2) { return false; }
-
+  m_nSigJets_aftercut->Fill(sigJets.size() + vetoJets.size());
+  
   m_cutflow->Fill(6, evt.mc_weight);
 
   // order in pt
@@ -182,11 +211,15 @@ bool VHAnalysis::ApplySelection(EvtInfo& evt) {
     sigJets[1] = tmp;
   }
 
+  m_SigJet1_pt_init->Fill(jets_pt->at(sigJets[0]));
   if(jets_pt->at(sigJets[0]) < 45e3) { return false; }
+  m_SigJet1_pt_aftercut->Fill(jets_pt->at(sigJets[0]));
 
   m_cutflow->Fill(7, evt.mc_weight);
 
+  m_nSigVetoJets_init->Fill(sigJets.size() + vetoJets.size());
   if(sigJets.size() + vetoJets.size() > 3) { return false; }
+  m_nSigVetoJets_aftercut->Fill(sigJets.size() + vetoJets.size());
 
   m_cutflow->Fill(8, evt.mc_weight);
 
@@ -210,27 +243,37 @@ bool VHAnalysis::ApplySelection(EvtInfo& evt) {
 
   bool passSumPt = true;
   if(evt.has3j()) {
+    m_sumpt123_init->Fill(jets_pt->at(evt.j1) + jets_pt->at(evt.j2) + jets_pt->at(evt.j3));
     if(jets_pt->at(evt.j1) + jets_pt->at(evt.j2) + jets_pt->at(evt.j3) < 150e3) {
       return false;
     }
+    m_sumpt123_aftercut->Fill(jets_pt->at(evt.j1) + jets_pt->at(evt.j2) + jets_pt->at(evt.j3));
   }
   else {
+    m_sumpt12_init->Fill(jets_pt->at(evt.j1) + jets_pt->at(evt.j2));
     if(jets_pt->at(evt.j1) + jets_pt->at(evt.j2) < 120e3) {
       return false;
     }
+    m_sumpt12_aftercut->Fill(jets_pt->at(evt.j1) + jets_pt->at(evt.j2));
   }
 
   m_cutflow->Fill(9, evt.mc_weight);
 
+  m_dphiMETdijet_init->Fill(evt.met.DeltaPhi(evt.dijet));
   if( fabs(evt.met.DeltaPhi(evt.dijet)) < 140 * TMath::Pi()/180. ) { return false; }
+  m_dphiMETdijet_aftercut->Fill(evt.met.DeltaPhi(evt.dijet));
 
   m_cutflow->Fill(10, evt.mc_weight);
 
+  m_dRSigJet1SigJet2_init->Fill(evt.jet1.DeltaR(evt.jet2));
   if(evt.jet1.DeltaR(evt.jet2) > 2) { return false; }
+  m_dRSigJet1SigJet2_aftercut->Fill(evt.jet1.DeltaR(evt.jet2));
 
   m_cutflow->Fill(11, evt.mc_weight);
 
+  m_massdijet_init->Fill(evt.dijet.M());
   if(evt.dijet.M() < 90 || evt.dijet.M() > 150) { return false; }
+  m_massdijet_aftercut->Fill(evt.dijet.M());
 
   m_cutflow->Fill(12, evt.mc_weight);
 
@@ -262,19 +305,19 @@ void VHAnalysis::WriteHistos() {
   m_nelectron_init->Write();
   m_nelectron_aftercut->Write();
   m_nmuons_init->Write();
-  m_nmuon_aftercut->Write();
+  m_nmuons_aftercut->Write();
   m_MET_init->Write();
   m_MET_aftercut->Write();
   m_MPT_init->Write();
   m_MPT_aftercut->Write();
   m_dphiMETMPT_init->Write();
   m_dphiMETMPT_aftercut->Write();
-  m_SigJets_init->Write();
-  m_SigJets_aftercut->Write();
+  m_nSigJets_init->Write();
+  m_nSigJets_aftercut->Write();
   m_SigJet1_pt_init->Write();
   m_SigJet1_pt_aftercut->Write();
-  m_SigVetoJets_init->Write();
-  m_SigVetoJets_aftercut->Write();
+  m_nSigVetoJets_init->Write();
+  m_nSigVetoJets_aftercut->Write();
   m_sumpt12_init->Write();
   m_sumpt12_aftercut->Write();
   m_sumpt123_init->Write();
