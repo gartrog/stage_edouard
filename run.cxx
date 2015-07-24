@@ -12,7 +12,6 @@ int main(int argc, char** argv) {
   analysis.WriteHistos();
 
   f->Close();
-  std::cout << "toto" << std::endl;
   std::cout << "Closing input file" << std::endl;
   return 0;
 }

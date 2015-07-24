@@ -23,5 +23,5 @@ BTagging.o : BTagging.cxx
 	$(CXX) -c -o $@ $^
 
 clean:
-	rm -f run
+	rm -f run *.o
 

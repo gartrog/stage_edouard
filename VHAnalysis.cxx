@@ -11,6 +11,8 @@ VHAnalysis::VHAnalysis(TTree* tree, const std::string& outfname) :
   VHNtuple(tree),
   m_outfile(outfname, "recreate"),
   m_kinVariables(),
+  m_truthLeptons(),
+  m_truthCompo(),
   m_btag()
 {
 
@@ -70,10 +72,25 @@ void VHAnalysis::InitializeHistograms() {
   m_kinVariables.addHisto("jet1pT;p_{T} [GeV]", {100, 0, 500});
   
 
+  m_truthLeptons.addHisto("leppT;p_{T} [GeV]", {40, 0, 100});
+  m_truthLeptons.addHisto("lepeta;#eta", {40, -5, 5});
+
+  std::vector<std::string> categories {"FullHad", "e", "mu", "tau", "e-e", "e-mu",
+                                             "mu-mu", "e-tau", "mu-tau", "tau-tau"};
+  m_truthCompo.addHisto("compo;Categories", categories);
 }
 
 void VHAnalysis::Loop() {
    if (fChain == 0) return;
+   fChain->SetBranchStatus("*",0);  // disable all branches
+   fChain->SetBranchStatus("jets*",1);
+   fChain->SetBranchStatus("muons_isVHL*",1);
+   fChain->SetBranchStatus("electrons_isVHL*",1);
+   fChain->SetBranchStatus("n*",1);
+   fChain->SetBranchStatus("mc*",1);
+   fChain->SetBranchStatus("trackmet*",1);
+   fChain->SetBranchStatus("met*",1);
+   fChain->SetBranchStatus("eve_mc*",1);
 
    Long64_t nentries = fChain->GetEntries();
 
@@ -82,7 +99,7 @@ void VHAnalysis::Loop() {
       Long64_t ientry = LoadTree(jentry);
       if (ientry < 0) break;
       nb = fChain->GetEntry(jentry);   nbytes += nb;
-      if(jentry%10000 == 0) {
+      if(jentry%100000 == 0) {
         std::cout << "Processing entry: " << jentry << std::endl;
       }
       ProcessEntry(jentry);
@@ -106,6 +123,8 @@ void VHAnalysis::ProcessEntry(Long64_t ientry) {
   DoBTagging(evt);
 
   PlotVariables(evt, "btag_");
+
+  StudyMCLeptons(evt);
 }
 
 bool VHAnalysis::ApplySelection(EvtInfo& evt) {
@@ -270,5 +289,35 @@ void VHAnalysis::WriteHistos() {
   m_cutflow->Write();
 
   m_kinVariables.saveHists(&(*m_outfile));
+  m_truthLeptons.saveHists(&(*m_outfile));
+  m_truthCompo.saveHists(&(*m_outfile));
+}
+
+void VHAnalysis::StudyMCLeptons(EvtInfo& evt) {
+  TruthInfo truth;
+  std::vector<int> pos {6, 7, 8, 9};
+  std::vector<int> leps_pdgIds {11, 13, 15};
+
+  for(auto p : pos) {
+    int pdgid = abs(mc_pdg->at(p));
+    for(auto id : leps_pdgIds) {
+      if(pdgid == id) {
+        truth.leps_types.push_back(pdgid);
+        TLorentzVector tlv;
+        tlv.SetPxPyPzE(mc_px->at(p)/1.e3, mc_py->at(p)/1.e3, mc_pz->at(p)/1.e3, mc_E->at(p)/1.e3);
+        truth.leps.push_back(tlv);
+      }
+    }
+  }
+
+  for(unsigned int i = 0; i < truth.leps.size(); i++) {
+    m_truthLeptons.setCut(truth.prefix(truth.leps_types.at(i)));
+    m_truthLeptons.fillCurrent("leppT", truth.leps[i].Pt(), evt.total_weight());
+    m_truthLeptons.fillCurrent("lepeta", truth.leps[i].Eta(), evt.total_weight());
+  }
+
+  m_truthCompo.fill("all_compo", truth.category(), evt.total_weight());
+  m_truthCompo.fill(evt.kin_prefix()+"_compo", truth.category(), evt.total_weight());
+
 }
 

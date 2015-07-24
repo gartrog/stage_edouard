@@ -25,6 +25,8 @@ class VHAnalysis : public VHNtuple {
 
     //List Historgram
     Histos m_kinVariables;
+    Histos m_truthLeptons;
+    Histos m_truthCompo;
     //_____________________
 
     BTagging m_btag;
@@ -78,6 +80,8 @@ class VHAnalysis : public VHNtuple {
     void PlotVariables(EvtInfo& evt, const std::string& prefix);
     void FillPlots(EvtInfo& evt);
     void DoBTagging(EvtInfo& evt);
+
+    void StudyMCLeptons(EvtInfo& evt);
 
 };
 
