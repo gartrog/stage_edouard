@@ -24,10 +24,51 @@ VHAnalysis::~VHAnalysis() {
 
 void VHAnalysis::InitializeHistograms() {
 
+
+  m_nelectron_init = new TH1F( "m_nelectron_init", "m_nelectron_init;nb_electrons", 100, 0, 100);
+  m_nelectron_aftercut = new TH1F( "m_nelectron_aftercut", "m_nelectron_aftercut;nb_electrons", 100, 0,  100);
+
+  m_nmuons_init = new TH1F( "m_nmuons_init", "m_nmuons_init;nb_muons", 100, 0, 100);
+  m_nmuon_aftercut = new TH1F( "m_nmuon_aftercut", "m_nmuon_aftercut;nb_muons", 100, 0, 100);
+  
+  m_MET_init = new TH1F( "m_MET_init", "m_MET_init;MET", 100, 0, 300e3);
+  m_MET_aftercut = new TH1F( "m_MET_aftercut", "m_MET_aftercut;MET", 100, 0, 300e3);
+  
+  m_MPT_init = new TH1F( "m_MPT_init", "m_MPT_init;MPT", 100, 0, 300e3);
+  m_MPT_aftercut = new TH1F( "m_MPT_aftercut", "m_MPT_aftercut;MPT", 100, 0, 300e3);
+  
+  m_dphiMETMPT_init = new TH1F( "m_dphiMETMPT_init", "m_dphiMETMPT_init;DeltaPhiMETMPT", 100, 0, 6.5);
+  m_dphiMETMPT_aftercut = new TH1F( "m_dphiMETMPT_aftercut", "m_dphiMETMPT_aftercut;DeltaPhiMETMPT", 100, 0, 6.5);
+  
+  m_SigJets_init = new TH1F( "m_SigJets_init", "m_SigJets_init;nb_Jets", 100, 0, 10);
+  m_SigJets_aftercut = new TH1F( "m_SigJets_aftercut", "m_SigJets_aftercut;nb_Jets", 100, 0, 10);
+  
+  m_SigJet1_pt_init = new TH1F( "m_SigJet1_pt_init", "m_SigJet1_pt_init;pt_Signal1", 100, 0, 300e3);
+  m_SigJet1_pt_aftercut = new TH1F( "m_SigJet1_pt_aftercut", "m_SigJet1_pt_aftercut;pt_Signal1", 100, 0, 300e3);
+  
+  m_SigVetoJets_init = new TH1F( "m_SigVetoJets_init", "m_SigVetoJets_init;nb_Jets", 100, 0, 10);
+  m_SigVetoJets_aftercut = new TH1F( "m_SigVetoJets_aftercut", "m_SigVetoJets_aftercut;nb_Jets", 100, 0, 10);
+
+  m_sumpt12_init = new TH1F( "m_sumpt12_init", "m_sumpt12_init;sum_pt1pt2", 100, 0, 500e3);
+  m_sumpt12_aftercut = new TH1F( "m_sumpt12_aftercut", "m_sumpt12_aftercut;sum_pt1pt2", 100, 0, 500e3);
+
+  m_sumpt123_init = new TH1F( "m_sumpt123_init", "m_sumpt123_init;sum_pt1pt2pt3", 100, 0, 500e3);
+  m_sumpt123_aftercut = new TH1F( "m_sumpt123_aftercut", "m_sumpt123_aftercut;sum_pt1pt2pt3", 100, 0, 500e3);
+
+  m_dphiMETdijet_init = new TH1F( "m_dphiMETdijet_init", "m_dphiMETdijet_init;DeltaPhiMETdijet", 100, 0, 6.5);
+  m_dphiMETdijet_aftercut = new TH1F( "m_dphiMETdijet_aftercut", "m_dphiMETdijet_aftercut;DeltaPhiMETdijet", 100, 0, 6.5);
+
+  m_dRSigJet1SigJet2_init = new TH1F( "m_dRSigJet1SigJet2_init", "m_dRSigJet1SigJet2_init;DeltaRsig1sig2", 100, 0, 4.5);
+  m_dRSigJet1SigJet2_aftercut = new TH1F( "m_dRSigJet1SigJet2_aftercut", "m_dRSigJet1SigJet2_aftercut;DeltaRsig1sig2", 100, 0, 4.5);
+
+  m_massdijet_init = new TH1F( "m_massdijet_init", "m_massdijet_init;massDijet", 100, 0, 250e3);
+  m_massdijet_aftercut = new TH1F( "m_massdijet_aftercut", "m_massdijet_aftercut;massDijet", 100, 0, 250e3);
+
   m_cutflow = new TH1F("cutflow", "cutflow", 20, -0.5, 19.5);
   m_cutflow->SetDirectory(0);
 
   m_kinVariables.addHisto("jet1pT;p_{T} [GeV]", {100, 0, 500});
+  
 
 }
 
@@ -139,10 +180,14 @@ bool VHAnalysis::ApplySelection(EvtInfo& evt) {
   if(vetoJets.size() > 0) {
     evt.j3 = vetoJets[0];
   }
+  //__________________________
+
 
   // let the EvtInfo fill itself the jet TLorentzVectors
   evt.FillTLVs(jets_E, jets_pt, jets_phi, jets_eta, jets_truth);
   evt.met.SetPtEtaPhiM(met_pt/1.e3, 0, met_phi, 0);
+  //______________________________________________________________
+
 
   bool passSumPt = true;
   if(evt.has3j()) {
@@ -194,6 +239,33 @@ void VHAnalysis::FillPlots(EvtInfo& evt) {
 void VHAnalysis::WriteHistos() {
   std::cout << "Writing histograms to the output file" << std::endl;
   m_outfile->cd();
+
+  m_nelectron_init->Write();
+  m_nelectron_aftercut->Write();
+  m_nmuons_init->Write();
+  m_nmuon_aftercut->Write();
+  m_MET_init->Write();
+  m_MET_aftercut->Write();
+  m_MPT_init->Write();
+  m_MPT_aftercut->Write();
+  m_dphiMETMPT_init->Write();
+  m_dphiMETMPT_aftercut->Write();
+  m_SigJets_init->Write();
+  m_SigJets_aftercut->Write();
+  m_SigJet1_pt_init->Write();
+  m_SigJet1_pt_aftercut->Write();
+  m_SigVetoJets_init->Write();
+  m_SigVetoJets_aftercut->Write();
+  m_sumpt12_init->Write();
+  m_sumpt12_aftercut->Write();
+  m_sumpt123_init->Write();
+  m_sumpt123_aftercut->Write();
+  m_dphiMETdijet_init->Write();
+  m_dphiMETdijet_aftercut->Write();
+  m_dRSigJet1SigJet2_init->Write();
+  m_dRSigJet1SigJet2_aftercut->Write();
+  m_massdijet_init->Write();
+  m_massdijet_aftercut->Write();
 
   m_cutflow->Write();
 

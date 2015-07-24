@@ -23,11 +23,54 @@ class VHAnalysis : public VHNtuple {
   private:
     File m_outfile;
 
+    //List Historgram
     Histos m_kinVariables;
+    //_____________________
 
     BTagging m_btag;
 
+    //Histogram 
     TH1F* m_cutflow;
+
+    TH1F* m_nelectron_init;
+    TH1F* m_nelectron_aftercut;
+    
+    TH1F* m_nmuons_init;
+    TH1F* m_nmuon_aftercut;
+    
+    TH1F* m_MET_init;
+    TH1F* m_MET_aftercut;
+    
+    TH1F* m_MPT_init;
+    TH1F* m_MPT_aftercut;
+    
+    TH1F* m_dphiMETMPT_init;
+    TH1F* m_dphiMETMPT_aftercut;
+    
+    TH1F* m_SigJets_init;
+    TH1F* m_SigJets_aftercut;
+    
+    TH1F* m_SigJet1_pt_init;
+    TH1F* m_SigJet1_pt_aftercut;
+    
+    TH1F* m_SigVetoJets_init;
+    TH1F* m_SigVetoJets_aftercut;
+    
+    TH1F* m_sumpt12_init;
+    TH1F* m_sumpt12_aftercut;
+    
+    TH1F* m_sumpt123_init;
+    TH1F* m_sumpt123_aftercut;
+    
+    TH1F* m_dphiMETdijet_init;
+    TH1F* m_dphiMETdijet_aftercut;
+    
+    TH1F* m_dRSigJet1SigJet2_init;
+    TH1F* m_dRSigJet1SigJet2_aftercut;
+    
+    TH1F* m_massdijet_init;
+    TH1F* m_massdijet_aftercut;
+    //____________________________________
 
     void InitializeHistograms();
     void ProcessEntry(Long64_t ientry);
