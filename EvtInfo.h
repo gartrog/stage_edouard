@@ -15,6 +15,7 @@ struct EvtInfo {
   TLorentzVector jet2;
   TLorentzVector jet3;
   TLorentzVector dijet;
+  TLorentzVector trijet;
   TLorentzVector met;
   int type1;
   int type2;
@@ -22,6 +23,7 @@ struct EvtInfo {
 
   float total_weight() const { return mc_weight*btag_weight; }
   bool has3j() const { return j3!=-1; }
+
 
   std::string kin_prefix() const {
     std::stringstream ss;
@@ -54,7 +56,8 @@ struct EvtInfo {
       jet3.SetPtEtaPhiE(pt->at(j3)/1.e3, eta->at(j3), phi->at(j3), E->at(j3)/1.e3);
       type3 = truth->at(j3);
     }
-    dijet = jet1+jet2;
+    dijet = jet1  +jet2;
+    trijet = jet1 + jet2 + jet3;
   }
 };
 

@@ -20,6 +20,7 @@ class VHAnalysis : public VHNtuple {
     void Loop();
     void WriteHistos();
 
+
   private:
     File m_outfile;
 
@@ -80,6 +81,8 @@ class VHAnalysis : public VHNtuple {
     void PlotVariables(EvtInfo& evt, const std::string& prefix);
     void FillPlots(EvtInfo& evt);
     void DoBTagging(EvtInfo& evt);
+
+
 
     void StudyMCLeptons(EvtInfo& evt);
 

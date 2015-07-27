@@ -10,7 +10,7 @@ all: bin
 
 bin: run
 
-run: run.cxx VHAnalysis.o VHNtuple.o BTagging.o
+run: run.cxx VHAnalysis.o VHNtuple.o BTagging.o PostProcessing.o
 	$(CXX) $(LINKFLAGS) -o run $^
 
 VHAnalysis.o : VHAnalysis.cxx
@@ -20,6 +20,9 @@ VHNtuple.o : VHNtuple.C
 	$(CXX) -c -o $@ $^
 
 BTagging.o : BTagging.cxx
+	$(CXX) -c -o $@ $^
+
+PostProcessing.o : PostProcessing.cxx
 	$(CXX) -c -o $@ $^
 
 clean:

@@ -75,9 +75,9 @@ void VHAnalysis::InitializeHistograms() {
   m_kinVariables.addHisto("jet1eta;#eta [degrés]", {100, 0, 4});
   m_kinVariables.addHisto("jet2eta;#eta [degrés]", {100, 0, 4});
   m_kinVariables.addHisto("jet3eta;#eta [degrés]", {100, 0, 4});
-  m_kinVariables.addHisto("jet1thruth;flavor", {16, 0, 16});
-  m_kinVariables.addHisto("jet2thruth;flavor", {16, 0, 16});
-  m_kinVariables.addHisto("jet3thruth;flavor", {16, 0, 16});
+  m_kinVariables.addHisto("jet1truth;flavor", {16, 0, 16});
+  m_kinVariables.addHisto("jet2truth;flavor", {16, 0, 16});
+  m_kinVariables.addHisto("jet3truth;flavor", {16, 0, 16});
   m_kinVariables.addHisto("massj1j2;M [MeV]", {100, 0, 150/1000});
   m_kinVariables.addHisto("massj1j2j3;M [MeV]", {100, 0, 150/1000});
   m_kinVariables.addHisto("DeltaRj1j2;DetlaR", {100, 0, 4.5});
@@ -85,11 +85,11 @@ void VHAnalysis::InitializeHistograms() {
   m_kinVariables.addHisto("DeltaEtaj1j2;DetlaEta [degrés]", {100, 0, 4.5});
   m_kinVariables.addHisto("DeltaPhiMETdijet;DetlaPhi [degrés]", {100, 0, 4.5});
   m_kinVariables.addHisto("MET;MET [GeV]", {100, 0, 300});
-  m_kinVariables.addHisto("sum_pt1pt2MET; [GeV]", {100, 0, 300});
-  m_kinVariables.addHisto("sum_pt1pt2pt3MET; [GeV]", {100, 0, 300});
-  m_kinVariables.addHisto2D("jet1thruth_vs_jet2thruth;jet1thruth;jet2thruth", {16, 0, 16}, {16, 0, 16});
-  m_kinVariables.addHisto2D("jet1thruth_vs_jet3thruth;jet1thruth;jet3thruth", {16, 0, 16}, {16, 0, 16});
-  m_kinVariables.addHisto2D("jet2thruth_vs_jet3thruth;jset2thruth;jet3thruth", {16, 0, 16}, {16, 0, 16});
+  m_kinVariables.addHisto("sumpt1pt2MET; [GeV]", {100, 0, 300});
+  m_kinVariables.addHisto("sumpt1pt2pt3MET; [GeV]", {100, 0, 300});
+  m_kinVariables.addHisto2D("jet1truthvsjet2truth;jet1truth;jet2truth", {16, 0, 16}, {16, 0, 16});
+  m_kinVariables.addHisto2D("jet1truthvsjet3truth;jet1truth;jet3truth", {16, 0, 16}, {16, 0, 16});
+  m_kinVariables.addHisto2D("jet2truthvsjet3truth;jet2truth;jet3truth", {16, 0, 16}, {16, 0, 16});
 
   m_truthLeptons.addHisto("leppT;p_{T} [GeV]", {40, 0, 100});
   m_truthLeptons.addHisto("lepeta;#eta", {40, -5, 5});
@@ -237,7 +237,7 @@ bool VHAnalysis::ApplySelection(EvtInfo& evt) {
 
   // let the EvtInfo fill itself the jet TLorentzVectors
   evt.FillTLVs(jets_E, jets_pt, jets_phi, jets_eta, jets_truth);
-  evt.met.SetPtEtaPhiM(met_pt/1.e3, 0, met_phi, 0);
+  evt.met.SetPtEtaPhiE(met_pt/1.e3, 0, met_phi, met_pt/1.e3);
   //______________________________________________________________
 
 
@@ -294,10 +294,38 @@ void VHAnalysis::PlotVariables(EvtInfo& evt, const std::string& prefix) {
 }
 
 void VHAnalysis::FillPlots(EvtInfo& evt) {
+
+  TLorentzVector sum1;    // TLorentzVector for the sum of jet1pT, jet2pT and MET
+  TLorentzVector sum2;    // TLorentzVector for the sum of jet1pT, jet2pT, jet3pT and MET
+
+
   m_kinVariables.fillCurrent("jet1pT", evt.jet1.Pt(), evt.total_weight());
+  m_kinVariables.fillCurrent("jet2pT", evt.jet2.Pt(), evt.total_weight());
+  m_kinVariables.fillCurrent("jet1eta", evt.jet1.Eta(), evt.total_weight());
+  m_kinVariables.fillCurrent("jet2eta", evt.jet2.Eta(), evt.total_weight());
+  m_kinVariables.fillCurrent("jet1truth", evt.type1, evt.total_weight());
+  m_kinVariables.fillCurrent("jet2truth", evt.type2, evt.total_weight());
+  m_kinVariables.fillCurrent("massj1j2", evt.dijet.M(), evt.total_weight());
+  m_kinVariables.fillCurrent("DeltaRj1j2", evt.jet1.DeltaR(evt.jet2), evt.total_weight());
+  m_kinVariables.fillCurrent("DeltaPhij1j2", evt.jet1.DeltaPhi(evt.jet2), evt.total_weight());
+  m_kinVariables.fillCurrent("DeltaEtaj1j2", fabs(evt.jet1.Eta()-evt.jet2.Eta()), evt.total_weight());
+  m_kinVariables.fillCurrent("DeltaPhiMETdijet", evt.met.DeltaPhi(evt.dijet), evt.total_weight());
+  m_kinVariables.fillCurrent("MET", evt.met.Pt(), evt.total_weight());
+  m_kinVariables.fillCurrent("sumpt1pt2MET", evt.jet1.Pt()+evt.jet2.Pt()+evt.met.Pt(), evt.total_weight());
+  //m_kinVariables.fillCurrent2D("jet1truthvsjet2truth", evt.type1, evt.type2, evt.total_weight());
+
+  if(evt.has3j()){   
+    m_kinVariables.fillCurrent("jet3pT", evt.jet3.Pt(), evt.total_weight());
+    m_kinVariables.fillCurrent("jet3eta", evt.jet3.Eta(), evt.total_weight());
+    m_kinVariables.fillCurrent("jet3truth", evt.type3, evt.total_weight());
+    m_kinVariables.fillCurrent("massj1j2j3", evt.trijet.M(), evt.total_weight());
+    m_kinVariables.fillCurrent("sumpt1pt2pt3MET", evt.jet1.Pt()+evt.jet2.Pt()+evt.jet3.Pt()+evt.met.Pt(), evt.total_weight());
+   // m_kinVariables.fillCurrent2D("jet1truthvsjet3truth", evt.type1, evt.type3, evt.total_weight());
+   // m_kinVariables.fillCurrent2D("jet2truthvsjet3truth", evt.type2, evt.type3, evt.total_weight());
+  }
 
 }
-
+ 
 void VHAnalysis::WriteHistos() {
   std::cout << "Writing histograms to the output file" << std::endl;
   m_outfile->cd();
@@ -334,6 +362,8 @@ void VHAnalysis::WriteHistos() {
   m_kinVariables.saveHists(&(*m_outfile));
   m_truthLeptons.saveHists(&(*m_outfile));
   m_truthCompo.saveHists(&(*m_outfile));
+
+  m_outfile->Close();
 }
 
 void VHAnalysis::StudyMCLeptons(EvtInfo& evt) {
