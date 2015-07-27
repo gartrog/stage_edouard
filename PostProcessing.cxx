@@ -9,40 +9,41 @@ double JetsFlavor(const std::string& name) {
   TH2F* h = f.getObject<TH2F>(name);
 
   int bin_bb, bin_bc, bin_bl, bin_bt, bin_other;
-  int ntot=0, nbb=0, nbc=0, nbl=0, nbt=0, nother=0;
+  float ntot=0, nbb=0, nbc=0, nbl=0, nbt=0, nother=0;
 
-  bin_bb=h->GetBin( 4, 4);
+  bin_bb=h->GetBin( 6, 6);
   nbb+=h->GetBinContent(bin_bb);
 
-  bin_bc=h->GetBin( 4, 3);
+  bin_bc=h->GetBin( 6, 5);
   nbc+=h->GetBinContent(bin_bc);
-  bin_bc=h->GetBin( 3, 4);
+  bin_bc=h->GetBin( 5, 6);
   nbc+=h->GetBinContent(bin_bc);
 
 
-  bin_bl=h->GetBin( 4, 0);
+  bin_bl=h->GetBin( 6, 1);
   nbl+=h->GetBinContent(bin_bl);
-  bin_bl=h->GetBin( 0, 4);
+  bin_bl=h->GetBin( 1, 6);
   nbl+=h->GetBinContent(bin_bl);
 
 
-  bin_bt=h->GetBin( 4, 14);
+  bin_bt=h->GetBin( 6, 16);
   nbt+=h->GetBinContent(bin_bt);
-  bin_bt=h->GetBin( 14, 4);
+  bin_bt=h->GetBin( 16, 6);
   nbt+=h->GetBinContent(bin_bt);
 
 
-  bin_other=h->GetBin( 3, 3);
+
+  bin_other=h->GetBin( 5, 5);
   nother+=h->GetBinContent(bin_other);
-  bin_other=h->GetBin( 0, 0);
+  bin_other=h->GetBin( 1, 1);
   nother+=h->GetBinContent(bin_other);
-  bin_other=h->GetBin( 0, 3);
+  bin_other=h->GetBin( 1, 5);
   nother+=h->GetBinContent(bin_other);
-  bin_other=h->GetBin( 3, 0);
+  bin_other=h->GetBin( 5, 1);
   nother+=h->GetBinContent(bin_other);
-  bin_other=h->GetBin( 14, 3);
+  bin_other=h->GetBin( 16, 5);
   nother+=h->GetBinContent(bin_other);
-  bin_other=h->GetBin( 3, 14);
+  bin_other=h->GetBin( 5, 16);
   nother+=h->GetBinContent(bin_other);
 
 
@@ -53,4 +54,5 @@ double JetsFlavor(const std::string& name) {
   std::cout<< "bl = " << (nbl/ntot)*100 << "%" << std::endl;
   std::cout<< "bt = " << (nbt/ntot)*100 << "%" << std::endl;
   std::cout<< "other = " << (nother/ntot)*100 << "%" << std::endl;
+  f->Close();
 }

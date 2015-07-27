@@ -312,7 +312,7 @@ void VHAnalysis::FillPlots(EvtInfo& evt) {
   m_kinVariables.fillCurrent("DeltaPhiMETdijet", evt.met.DeltaPhi(evt.dijet), evt.total_weight());
   m_kinVariables.fillCurrent("MET", evt.met.Pt(), evt.total_weight());
   m_kinVariables.fillCurrent("sumpt1pt2MET", evt.jet1.Pt()+evt.jet2.Pt()+evt.met.Pt(), evt.total_weight());
-  //m_kinVariables.fillCurrent2D("jet1truthvsjet2truth", evt.type1, evt.type2, evt.total_weight());
+  m_kinVariables.fillCurrent2D("jet1truthvsjet2truth", evt.type1, evt.type2, evt.total_weight());
 
   if(evt.has3j()){   
     m_kinVariables.fillCurrent("jet3pT", evt.jet3.Pt(), evt.total_weight());
@@ -320,8 +320,8 @@ void VHAnalysis::FillPlots(EvtInfo& evt) {
     m_kinVariables.fillCurrent("jet3truth", evt.type3, evt.total_weight());
     m_kinVariables.fillCurrent("massj1j2j3", (evt.trijet.M())*1.e3, evt.total_weight());
     m_kinVariables.fillCurrent("sumpt1pt2pt3MET", evt.jet1.Pt()+evt.jet2.Pt()+evt.jet3.Pt()+evt.met.Pt(), evt.total_weight());
-   // m_kinVariables.fillCurrent2D("jet1truthvsjet3truth", evt.type1, evt.type3, evt.total_weight());
-   // m_kinVariables.fillCurrent2D("jet2truthvsjet3truth", evt.type2, evt.type3, evt.total_weight());
+    m_kinVariables.fillCurrent2D("jet1truthvsjet3truth", evt.type1, evt.type3, evt.total_weight());
+    m_kinVariables.fillCurrent2D("jet2truthvsjet3truth", evt.type2, evt.type3, evt.total_weight());
   }
 
 }
