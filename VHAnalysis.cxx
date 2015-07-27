@@ -39,26 +39,26 @@ void VHAnalysis::InitializeHistograms() {
   m_MPT_init = new TH1F( "m_MPT_init", "m_MPT_init;MPT", 100, 0, 300e3);
   m_MPT_aftercut = new TH1F( "m_MPT_aftercut", "m_MPT_aftercut;MPT", 100, 0, 300e3);
 
-  m_dphiMETMPT_init = new TH1F( "m_dphiMETMPT_init", "m_dphiMETMPT_init;DeltaPhiMETMPT", 100, 0, 6.5);
-  m_dphiMETMPT_aftercut = new TH1F( "m_dphiMETMPT_aftercut", "m_dphiMETMPT_aftercut;DeltaPhiMETMPT", 100, 0, 6.5);
+  m_dphiMETMPT_init = new TH1F( "m_dphiMETMPT_init", "m_dphiMETMPT_init;DeltaPhiMETMPT", 100, 0, 4);
+  m_dphiMETMPT_aftercut = new TH1F( "m_dphiMETMPT_aftercut", "m_dphiMETMPT_aftercut;DeltaPhiMETMPT", 100, 0, 4);
 
-  m_nSigJets_init = new TH1F( "m_nSigJets_init", "m_nnSigJets_init;nb_Jets", 100, 0, 10);
-  m_nSigJets_aftercut = new TH1F( "m_nSigJets_aftercut", "m_nSigJets_aftercut;nb_Jets", 100, 0, 10);
+  m_nSigJets_init = new TH1F( "m_nSigJets_init", "m_nnSigJets_init;nb_Jets", 10, 0, 10);
+  m_nSigJets_aftercut = new TH1F( "m_nSigJets_aftercut", "m_nSigJets_aftercut;nb_Jets", 10, 0, 10);
 
-  m_SigJet1_pt_init = new TH1F( "m_SigJet1_pt_init", "m_SigJet1_pt_init;pt_Signal1", 100, 0, 300e3);
-  m_SigJet1_pt_aftercut = new TH1F( "m_SigJet1_pt_aftercut", "m_SigJet1_pt_aftercut;pt_Signal1", 100, 0, 300e3);
+  m_SigJet1_pt_init = new TH1F( "m_SigJet1_pt_init", "m_SigJet1_pt_init;pt_Signal1", 10, 0, 300e3);
+  m_SigJet1_pt_aftercut = new TH1F( "m_SigJet1_pt_aftercut", "m_SigJet1_pt_aftercut;pt_Signal1", 10, 0, 300e3);
 
-  m_nSigVetoJets_init = new TH1F( "m_nSigVetoJets_init", "m_nSigVetoJets_init;nb_Jets", 100, 0, 10);
-  m_nSigVetoJets_aftercut = new TH1F( "m_nSigVetoJets_aftercut", "m_nSigVetoJets_aftercut;nb_Jets", 100, 0, 10);
+  m_nSigVetoJets_init = new TH1F( "m_nSigVetoJets_init", "m_nSigVetoJets_init;nb_Jets", 10, 0, 10);
+  m_nSigVetoJets_aftercut = new TH1F( "m_nSigVetoJets_aftercut", "m_nSigVetoJets_aftercut;nb_Jets", 10, 0, 10);
 
   m_sumpt12_init = new TH1F( "m_sumpt12_init", "m_sumpt12_init;sum_pt1pt2", 100, 0, 500e3);
   m_sumpt12_aftercut = new TH1F( "m_sumpt12_aftercut", "m_sumpt12_aftercut;sum_pt1pt2", 100, 0, 500e3);
 
-  m_sumpt123_init = new TH1F( "m_sumpt123_init", "m_sumpt123_init;sum_pt1pt2pt3", 100, 0, 500e3);
-  m_sumpt123_aftercut = new TH1F( "m_sumpt123_aftercut", "m_sumpt123_aftercut;sum_pt1pt2pt3", 100, 0, 500e3);
+  m_sumpt123_init = new TH1F( "m_sumpt123_init", "m_sumpt123_init;sum_pt1pt2pt3", 100, 0, 600e3);
+  m_sumpt123_aftercut = new TH1F( "m_sumpt123_aftercut", "m_sumpt123_aftercut;sum_pt1pt2pt3", 100, 0, 600e3);
 
-  m_dphiMETdijet_init = new TH1F( "m_dphiMETdijet_init", "m_dphiMETdijet_init;DeltaPhiMETdijet", 100, 0, 6.5);
-  m_dphiMETdijet_aftercut = new TH1F( "m_dphiMETdijet_aftercut", "m_dphiMETdijet_aftercut;DeltaPhiMETdijet", 100, 0, 6.5);
+  m_dphiMETdijet_init = new TH1F( "m_dphiMETdijet_init", "m_dphiMETdijet_init;DeltaPhiMETdijet", 100, 0, 4);
+  m_dphiMETdijet_aftercut = new TH1F( "m_dphiMETdijet_aftercut", "m_dphiMETdijet_aftercut;DeltaPhiMETdijet", 100, 0, 4);
 
   m_dRSigJet1SigJet2_init = new TH1F( "m_dRSigJet1SigJet2_init", "m_dRSigJet1SigJet2_init;DeltaRsig1sig2", 100, 0, 4.5);
   m_dRSigJet1SigJet2_aftercut = new TH1F( "m_dRSigJet1SigJet2_aftercut", "m_dRSigJet1SigJet2_aftercut;DeltaRsig1sig2", 100, 0, 4.5);
@@ -69,27 +69,27 @@ void VHAnalysis::InitializeHistograms() {
   m_cutflow = new TH1F("cutflow", "cutflow", 20, -0.5, 19.5);
   m_cutflow->SetDirectory(0);
 
-  m_kinVariables.addHisto("jet1pT;p_{T} [GeV]", {100, 0, 500});
-  m_kinVariables.addHisto("jet2pT;p_{T} [GeV]", {100, 0, 500});
-  m_kinVariables.addHisto("jet3pT;p_{T} [GeV]", {100, 0, 500});
-  m_kinVariables.addHisto("jet1eta;#eta [degrés]", {100, 0, 4});
-  m_kinVariables.addHisto("jet2eta;#eta [degrés]", {100, 0, 4});
-  m_kinVariables.addHisto("jet3eta;#eta [degrés]", {100, 0, 4});
-  m_kinVariables.addHisto("jet1truth;flavor", {16, 0, 16});
-  m_kinVariables.addHisto("jet2truth;flavor", {16, 0, 16});
-  m_kinVariables.addHisto("jet3truth;flavor", {16, 0, 16});
-  m_kinVariables.addHisto("massj1j2;M [MeV]", {100, 0, 150/1000});
-  m_kinVariables.addHisto("massj1j2j3;M [MeV]", {100, 0, 150/1000});
-  m_kinVariables.addHisto("DeltaRj1j2;DetlaR", {100, 0, 4.5});
-  m_kinVariables.addHisto("DeltaPhij1j2;DetlaPhi [degrés]", {100, 0, 4.5});
-  m_kinVariables.addHisto("DeltaEtaj1j2;DetlaEta [degrés]", {100, 0, 4.5});
-  m_kinVariables.addHisto("DeltaPhiMETdijet;DetlaPhi [degrés]", {100, 0, 4.5});
-  m_kinVariables.addHisto("MET;MET [GeV]", {100, 0, 300});
-  m_kinVariables.addHisto("sumpt1pt2MET; [GeV]", {100, 0, 300});
-  m_kinVariables.addHisto("sumpt1pt2pt3MET; [GeV]", {100, 0, 300});
-  m_kinVariables.addHisto2D("jet1truthvsjet2truth;jet1truth;jet2truth", {16, 0, 16}, {16, 0, 16});
-  m_kinVariables.addHisto2D("jet1truthvsjet3truth;jet1truth;jet3truth", {16, 0, 16}, {16, 0, 16});
-  m_kinVariables.addHisto2D("jet2truthvsjet3truth;jet2truth;jet3truth", {16, 0, 16}, {16, 0, 16});
+  m_kinVariables.addHisto("jet1pT;p_{T} [GeV]", {100, 0, 300});
+  m_kinVariables.addHisto("jet2pT;p_{T} [GeV]", {100, 0, 250});
+  m_kinVariables.addHisto("jet3pT;p_{T} [GeV]", {100, 0, 200});
+  m_kinVariables.addHisto("jet1eta;#eta", {100, 0, 3});
+  m_kinVariables.addHisto("jet2eta;#eta", {100, 0, 3});
+  m_kinVariables.addHisto("jet3eta;#eta", {100, 0, 3});
+  m_kinVariables.addHisto("jet1truth;jet_{flavor}", {16, 0, 16});
+  m_kinVariables.addHisto("jet2truth;jet_{flavor}", {16, 0, 16});
+  m_kinVariables.addHisto("jet3truth;jet_{flavor}", {16, 0, 16});
+  m_kinVariables.addHisto("massj1j2;M [MeV]", {100, 50, 150});
+  m_kinVariables.addHisto("massj1j2j3;M [MeV]", {100, 50, 150});
+  m_kinVariables.addHisto("DeltaRj1j2;#Delta R", {100, 0, 2.5});
+  m_kinVariables.addHisto("DeltaPhij1j2;#Delta #phi [rad]", {100, 0, 2.5});
+  m_kinVariables.addHisto("DeltaEtaj1j2;#Delta #eta", {100, 0, 2.5});
+  m_kinVariables.addHisto("DeltaPhiMETdijet;#Delta #phi [rad]", {100, 2, 3.5});
+  m_kinVariables.addHisto("MET;MET [GeV]", {100, 70, 300});
+  m_kinVariables.addHisto("sumpt1pt2MET;#sum (p_{T_{12}} + MET) [GeV]", {100, 200, 600});
+  m_kinVariables.addHisto("sumpt1pt2pt3MET;#sum (p_{T_{123}} + MET) [GeV]", {100, 250, 700});
+  m_kinVariables.addHisto2D("jet1truthvsjet2truth;jet1_{flavor};jet2_{flavor}", {16, 0, 16}, {16, 0, 16});
+  m_kinVariables.addHisto2D("jet1truthvsjet3truth;jet1_{flavor};jet3_{flavor}", {16, 0, 16}, {16, 0, 16});
+  m_kinVariables.addHisto2D("jet2truthvsjet3truth;jet2_{flavor};jet3_{flavor}", {16, 0, 16}, {16, 0, 16});
 
   m_truthLeptons.addHisto("leppT;p_{T} [GeV]", {40, 0, 100});
   m_truthLeptons.addHisto("lepeta;#eta", {40, -5, 5});
@@ -305,7 +305,7 @@ void VHAnalysis::FillPlots(EvtInfo& evt) {
   m_kinVariables.fillCurrent("jet2eta", evt.jet2.Eta(), evt.total_weight());
   m_kinVariables.fillCurrent("jet1truth", evt.type1, evt.total_weight());
   m_kinVariables.fillCurrent("jet2truth", evt.type2, evt.total_weight());
-  m_kinVariables.fillCurrent("massj1j2", evt.dijet.M(), evt.total_weight());
+  m_kinVariables.fillCurrent("massj1j2", (evt.dijet.M())*1.e3, evt.total_weight());
   m_kinVariables.fillCurrent("DeltaRj1j2", evt.jet1.DeltaR(evt.jet2), evt.total_weight());
   m_kinVariables.fillCurrent("DeltaPhij1j2", evt.jet1.DeltaPhi(evt.jet2), evt.total_weight());
   m_kinVariables.fillCurrent("DeltaEtaj1j2", fabs(evt.jet1.Eta()-evt.jet2.Eta()), evt.total_weight());
@@ -318,7 +318,7 @@ void VHAnalysis::FillPlots(EvtInfo& evt) {
     m_kinVariables.fillCurrent("jet3pT", evt.jet3.Pt(), evt.total_weight());
     m_kinVariables.fillCurrent("jet3eta", evt.jet3.Eta(), evt.total_weight());
     m_kinVariables.fillCurrent("jet3truth", evt.type3, evt.total_weight());
-    m_kinVariables.fillCurrent("massj1j2j3", evt.trijet.M(), evt.total_weight());
+    m_kinVariables.fillCurrent("massj1j2j3", (evt.trijet.M())*1.e3, evt.total_weight());
     m_kinVariables.fillCurrent("sumpt1pt2pt3MET", evt.jet1.Pt()+evt.jet2.Pt()+evt.jet3.Pt()+evt.met.Pt(), evt.total_weight());
    // m_kinVariables.fillCurrent2D("jet1truthvsjet3truth", evt.type1, evt.type3, evt.total_weight());
    // m_kinVariables.fillCurrent2D("jet2truthvsjet3truth", evt.type2, evt.type3, evt.total_weight());
