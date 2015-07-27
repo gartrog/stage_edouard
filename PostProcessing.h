@@ -4,6 +4,7 @@
 #include <string>
 
 	double JetsFlavor(const std::string& name);
-
+	double Sorting(const std::string& name);
+ 
 
 #endif

@@ -82,9 +82,8 @@ class VHAnalysis : public VHNtuple {
     void FillPlots(EvtInfo& evt);
     void DoBTagging(EvtInfo& evt);
 
-
-
     void StudyMCLeptons(EvtInfo& evt);
+    void StudyJetQuark(EvtInfo& evt);
 
 };
 

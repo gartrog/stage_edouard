@@ -78,8 +78,8 @@ void VHAnalysis::InitializeHistograms() {
   m_kinVariables.addHisto("jet1truth;jet_{flavor}", {16, 0, 16});
   m_kinVariables.addHisto("jet2truth;jet_{flavor}", {16, 0, 16});
   m_kinVariables.addHisto("jet3truth;jet_{flavor}", {16, 0, 16});
-  m_kinVariables.addHisto("massj1j2;M [MeV]", {100, 50, 150});
-  m_kinVariables.addHisto("massj1j2j3;M [MeV]", {100, 50, 150});
+  m_kinVariables.addHisto("massj1j2;M [MeV]", {100, 50, 200});
+  m_kinVariables.addHisto("massj1j2j3;M [MeV]", {100, 50, 500});
   m_kinVariables.addHisto("DeltaRj1j2;#Delta R", {100, 0, 2.5});
   m_kinVariables.addHisto("DeltaPhij1j2;#Delta #phi [rad]", {100, 0, 2.5});
   m_kinVariables.addHisto("DeltaEtaj1j2;#Delta #eta", {100, 0, 2.5});
@@ -305,7 +305,7 @@ void VHAnalysis::FillPlots(EvtInfo& evt) {
   m_kinVariables.fillCurrent("jet2eta", evt.jet2.Eta(), evt.total_weight());
   m_kinVariables.fillCurrent("jet1truth", evt.type1, evt.total_weight());
   m_kinVariables.fillCurrent("jet2truth", evt.type2, evt.total_weight());
-  m_kinVariables.fillCurrent("massj1j2", (evt.dijet.M())*1.e3, evt.total_weight());
+  m_kinVariables.fillCurrent("massj1j2", evt.dijet.M(), evt.total_weight());
   m_kinVariables.fillCurrent("DeltaRj1j2", evt.jet1.DeltaR(evt.jet2), evt.total_weight());
   m_kinVariables.fillCurrent("DeltaPhij1j2", evt.jet1.DeltaPhi(evt.jet2), evt.total_weight());
   m_kinVariables.fillCurrent("DeltaEtaj1j2", fabs(evt.jet1.Eta()-evt.jet2.Eta()), evt.total_weight());
@@ -318,7 +318,7 @@ void VHAnalysis::FillPlots(EvtInfo& evt) {
     m_kinVariables.fillCurrent("jet3pT", evt.jet3.Pt(), evt.total_weight());
     m_kinVariables.fillCurrent("jet3eta", evt.jet3.Eta(), evt.total_weight());
     m_kinVariables.fillCurrent("jet3truth", evt.type3, evt.total_weight());
-    m_kinVariables.fillCurrent("massj1j2j3", (evt.trijet.M())*1.e3, evt.total_weight());
+    m_kinVariables.fillCurrent("massj1j2j3", evt.trijet.M(), evt.total_weight());
     m_kinVariables.fillCurrent("sumpt1pt2pt3MET", evt.jet1.Pt()+evt.jet2.Pt()+evt.jet3.Pt()+evt.met.Pt(), evt.total_weight());
     m_kinVariables.fillCurrent2D("jet1truthvsjet3truth", evt.type1, evt.type3, evt.total_weight());
     m_kinVariables.fillCurrent2D("jet2truthvsjet3truth", evt.type2, evt.type3, evt.total_weight());
@@ -393,4 +393,41 @@ void VHAnalysis::StudyMCLeptons(EvtInfo& evt) {
   m_truthCompo.fill(evt.kin_prefix()+"_compo", truth.category(), evt.total_weight());
 
 }
+  
+void VHAnalysis::StudyMCLeptons(EvtInfo& evt); {
+  TLorentzVector bjet;
+  TLorentzVector bquark1;  //candidats à etre bquark matché au bjet    
+  TLorentzVector bquark2;  //candidats à etre bquark matché au bjet
+  TLorentzVector bquark_match;
+  TLorentzVector bquark;
+
+  bquark1.SetPxPyPzE(mc_px->at(4), mc_py->at(4), mc_pz->at(4), mc_E->at(4));
+  bquark2.SetPxPyPzE(mc_px->at(6), mc_py->at(6), mc_pz->at(6), mc_E->at(6));
+
+  if(has3j()) { return; }
+  if(type1==5 and type2==5) { return; }
+  if(type1!=5 and type2!=5) { return; }
+
+  if(type1==5) { jetb = jet1; }
+
+  else {
+    if(type2==5) { jetb = jet2; }
+  }
+
+  if(jetb.DeltaR(bquark1)>0.4 and jetb.DeltaR(bquark2)>0.4) { return; }
+
+  if(jetb.DeltaR(bquark1) < jetb.DeltaR(bquark2)) {
+    bquark_match = bquark1;
+    bquark = bquark2;
+  }
+  else {
+    if(jetb.DeltaR(bquark2) < jetb.DeltaR(bquark1)) {
+      bquark_match = bquark2;
+      bquark = bquark1;
+    }
+  }
+
+  
+}
+
 
