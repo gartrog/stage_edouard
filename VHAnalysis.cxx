@@ -26,7 +26,7 @@ VHAnalysis::~VHAnalysis() {
 
 void VHAnalysis::InitializeHistograms() {
 
-
+  //Selection Cut Histogramm
   m_nelectron_init = new TH1F( "m_nelectron_init", "m_nelectron_init;nb_electrons", 100, 0, 1);
   m_nelectron_aftercut = new TH1F( "m_nelectron_aftercut", "m_nelectron_aftercut;nb_electrons", 100, 0,  1);
 
@@ -65,10 +65,12 @@ void VHAnalysis::InitializeHistograms() {
 
   m_massdijet_init = new TH1F( "m_massdijet_init", "m_massdijet_init;massDijet", 100, 0, 250);
   m_massdijet_aftercut = new TH1F( "m_massdijet_aftercut", "m_massdijet_aftercut;massDijet", 100, 0, 250);
+  //______________________________________________________________________________________________________________________________________
 
   m_cutflow = new TH1F("cutflow", "cutflow", 20, -0.5, 19.5);
   m_cutflow->SetDirectory(0);
 
+  //Histogramm list for categorizing 
   m_kinVariables.addHisto("jet1pT;p_{T} [GeV]", {100, 0, 300});
   m_kinVariables.addHisto("jet2pT;p_{T} [GeV]", {100, 0, 250});
   m_kinVariables.addHisto("jet3pT;p_{T} [GeV]", {100, 0, 200});
@@ -90,12 +92,22 @@ void VHAnalysis::InitializeHistograms() {
   m_kinVariables.addHisto2D("jet1truthvsjet2truth;jet1_{flavor};jet2_{flavor}", {16, 0, 16}, {16, 0, 16});
   m_kinVariables.addHisto2D("jet1truthvsjet3truth;jet1_{flavor};jet3_{flavor}", {16, 0, 16}, {16, 0, 16});
   m_kinVariables.addHisto2D("jet2truthvsjet3truth;jet2_{flavor};jet3_{flavor}", {16, 0, 16}, {16, 0, 16});
+  //________________________________________________________________________________________________________
 
   m_truthLeptons.addHisto("leppT;p_{T} [GeV]", {40, 0, 100});
   m_truthLeptons.addHisto("lepeta;#eta", {40, -5, 5});
 
   std::vector<std::string> categories {"FullHad", "e", "mu", "tau", "e-e", "e-mu", "mu-mu", "e-tau", "mu-tau", "tau-tau"};
   m_truthCompo.addHisto("compo;Categories", categories);
+
+  //Histo Comparaison bJet / bQuark
+  m_bquark_pt = new TH1F("m_bquark_pt", "m_bquark_pt", 100, 0, 300e3);
+  m_bquark_eta = new TH1F("m_bquark_eta", "m_bquark_eta", 100, 0, 4);
+  m_bquark_phi = new TH1F("m_bquark_phi", "m_bquark_phi", 100, 0, 4);
+  m_DeltaR_bQuarkbJet = new TH1F("m_DeltaR_bQuarkbJet", "m_DeltaR_bQuarkbJet", 100, 0, 4);
+  m_DeltaR_bQuarkSecondJet = new TH1F("m_DeltaR_bQuarkSecondJet", "m_DeltaR_bQuarkSecondJet", 100, 0, 4);
+  m_rapprtPT_bJetbQuarkMATCH = new TH1F("m_rapprtPT_bJetbQuarkMATCH", "m_rapprtPT_bJetbQuarkMATCH", 100, 0, 2.5);
+  m_DeltaR_bQuarkThirdJet = new TH1F("m_DeltaR_bQuarkThirdJet", "m_DeltaR_bQuarkThirdJet", 100, 0, 4);
 }
 
 void VHAnalysis::Loop() {
@@ -143,6 +155,8 @@ void VHAnalysis::ProcessEntry(Long64_t ientry) {
   PlotVariables(evt, "btag_");
 
   StudyMCLeptons(evt);
+
+  StudyJetQuark(evt);
 }
 
 bool VHAnalysis::ApplySelection(EvtInfo& evt) {
@@ -363,6 +377,14 @@ void VHAnalysis::WriteHistos() {
   m_truthLeptons.saveHists(&(*m_outfile));
   m_truthCompo.saveHists(&(*m_outfile));
 
+  m_bquark_pt->Write();
+  m_bquark_eta->Write();
+  m_bquark_phi->Write();
+  m_DeltaR_bQuarkbJet->Write();
+  m_DeltaR_bQuarkSecondJet->Write();
+  m_rapprtPT_bJetbQuarkMATCH->Write();
+  m_DeltaR_bQuarkThirdJet->Write();
+
   m_outfile->Close();
 }
 
@@ -394,40 +416,59 @@ void VHAnalysis::StudyMCLeptons(EvtInfo& evt) {
 
 }
   
-void VHAnalysis::StudyMCLeptons(EvtInfo& evt); {
-  TLorentzVector bjet;
-  TLorentzVector bquark1;  //candidats à etre bquark matché au bjet    
-  TLorentzVector bquark2;  //candidats à etre bquark matché au bjet
-  TLorentzVector bquark_match;
-  TLorentzVector bquark;
+void VHAnalysis::StudyJetQuark(EvtInfo& evt) {
+  TLorentzVector bJet;    //the bJet 
+  TLorentzVector ndJet;   //second jet (the more distant from the selected bquark)
+  TLorentzVector rdJet;   //third jet (if there is one)
+  TLorentzVector bquark1;  //candidats à etre bquark matché au bJet    
+  TLorentzVector bquark2;  //candidats à etre bquark matché au bJet
+  TLorentzVector bquark_match;    //bquark matché to the bJet
+  TLorentzVector bquark;    //the other bquark
 
   bquark1.SetPxPyPzE(mc_px->at(4), mc_py->at(4), mc_pz->at(4), mc_E->at(4));
   bquark2.SetPxPyPzE(mc_px->at(6), mc_py->at(6), mc_pz->at(6), mc_E->at(6));
 
-  if(has3j()) { return; }
-  if(type1==5 and type2==5) { return; }
-  if(type1!=5 and type2!=5) { return; }
+  if(evt.type1==5 and evt.type2==5) { return; }
+  if(evt.type1!=5 and evt.type2!=5) { return; }
 
-  if(type1==5) { jetb = jet1; }
-
-  else {
-    if(type2==5) { jetb = jet2; }
+  if(evt.type1==5) { 
+    bJet = evt.jet1; 
+    ndJet = evt.jet2;
   }
 
-  if(jetb.DeltaR(bquark1)>0.4 and jetb.DeltaR(bquark2)>0.4) { return; }
+  else {
+    if(evt.type2==5) {
+      bJet = evt.jet2;
+      ndJet = evt.jet1;
+    }
+  }
 
-  if(jetb.DeltaR(bquark1) < jetb.DeltaR(bquark2)) {
+  if(bJet.DeltaR(bquark1)>0.4 and bJet.DeltaR(bquark2)>0.4) { return; }
+
+  if(bJet.DeltaR(bquark1) < bJet.DeltaR(bquark2)) {
     bquark_match = bquark1;
     bquark = bquark2;
   }
+
   else {
-    if(jetb.DeltaR(bquark2) < jetb.DeltaR(bquark1)) {
+    if(bJet.DeltaR(bquark2) < bJet.DeltaR(bquark1)) {
       bquark_match = bquark2;
       bquark = bquark1;
     }
   }
+ 
+  m_bquark_pt->Fill(bquark.Pt(), evt.total_weight());
+  m_bquark_eta->Fill(bquark.Eta(), evt.total_weight());
+  m_bquark_phi->Fill(bquark.Phi(), evt.total_weight());
+  m_DeltaR_bQuarkbJet->Fill(bquark.DeltaR(bJet), evt.total_weight());
+  m_DeltaR_bQuarkSecondJet->Fill(bquark.DeltaR(ndJet), evt.total_weight());
+  m_rapprtPT_bJetbQuarkMATCH->Fill( (bJet.Pt())/(bquark_match.Pt())*100 , evt.total_weight());
 
-  
+  if(evt.has3j()) { 
+    rdJet = evt.jet3;
+    m_DeltaR_bQuarkThirdJet->Fill(bquark.DeltaR(rdJet), evt.total_weight());
+  }
+
 }
 
 

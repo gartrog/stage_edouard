@@ -75,6 +75,17 @@ class VHAnalysis : public VHNtuple {
     TH1F* m_massdijet_aftercut;
     //____________________________________
 
+    //Histo Comparaison bJet / bQuark
+    TH1F* m_bquark_pt;
+    TH1F* m_bquark_eta;
+    TH1F* m_bquark_phi;
+    TH1F* m_DeltaR_bQuarkbJet;
+    TH1F* m_DeltaR_bQuarkSecondJet;
+    TH1F* m_rapprtPT_bJetbQuarkMATCH;
+    TH1F* m_DeltaR_bQuarkThirdJet;
+    //_____________________________________
+
+
     void InitializeHistograms();
     void ProcessEntry(Long64_t ientry);
     bool ApplySelection(EvtInfo& evt);
