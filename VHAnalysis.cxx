@@ -106,7 +106,7 @@ void VHAnalysis::InitializeHistograms() {
   m_bquark_phi = new TH1F("m_bquark_phi", "m_bquark_phi", 100, 0, 4);
   m_DeltaR_bQuarkbJet = new TH1F("m_DeltaR_bQuarkbJet", "m_DeltaR_bQuarkbJet", 100, 0, 4);
   m_DeltaR_bQuarkSecondJet = new TH1F("m_DeltaR_bQuarkSecondJet", "m_DeltaR_bQuarkSecondJet", 100, 0, 4);
-  m_rapprtPT_bJetbQuarkMATCH = new TH1F("m_rapprtPT_bJetbQuarkMATCH", "m_rapprtPT_bJetbQuarkMATCH", 100, 0, 2.5);
+  m_rapprtPT_bJetbQuarkMATCH = new TH1F("m_rapprtPT_bJetbQuarkMATCH", "m_rapprtPT_bJetbQuarkMATCH", 100, 0, 4);
   m_DeltaR_bQuarkThirdJet = new TH1F("m_DeltaR_bQuarkThirdJet", "m_DeltaR_bQuarkThirdJet", 100, 0, 4);
 }
 
@@ -425,8 +425,8 @@ void VHAnalysis::StudyJetQuark(EvtInfo& evt) {
   TLorentzVector bquark_match;    //bquark matché to the bJet
   TLorentzVector bquark;    //the other bquark
 
-  bquark1.SetPxPyPzE(mc_px->at(4), mc_py->at(4), mc_pz->at(4), mc_E->at(4));
-  bquark2.SetPxPyPzE(mc_px->at(6), mc_py->at(6), mc_pz->at(6), mc_E->at(6));
+  bquark1.SetPxPyPzE(mc_px->at(3), mc_py->at(3), mc_pz->at(3), mc_E->at(3));
+  bquark2.SetPxPyPzE(mc_px->at(5), mc_py->at(5), mc_pz->at(5), mc_E->at(5));
 
   if(evt.type1==5 and evt.type2==5) { return; }
   if(evt.type1!=5 and evt.type2!=5) { return; }
@@ -462,7 +462,7 @@ void VHAnalysis::StudyJetQuark(EvtInfo& evt) {
   m_bquark_phi->Fill(bquark.Phi(), evt.total_weight());
   m_DeltaR_bQuarkbJet->Fill(bquark.DeltaR(bJet), evt.total_weight());
   m_DeltaR_bQuarkSecondJet->Fill(bquark.DeltaR(ndJet), evt.total_weight());
-  m_rapprtPT_bJetbQuarkMATCH->Fill( (bJet.Pt())/(bquark_match.Pt())*100 , evt.total_weight());
+  m_rapprtPT_bJetbQuarkMATCH->Fill( (bJet.Pt())*1000/(bquark_match.Pt()) , evt.total_weight());
 
   if(evt.has3j()) { 
     rdJet = evt.jet3;
