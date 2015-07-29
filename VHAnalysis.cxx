@@ -39,36 +39,51 @@ void VHAnalysis::InitializeHistograms() {
   m_MPT_init = new TH1F( "m_MPT_init", "m_MPT_init;MPT", 100, 0, 300e3);
   m_MPT_aftercut = new TH1F( "m_MPT_aftercut", "m_MPT_aftercut;MPT", 100, 0, 300e3);
 
-  m_dphiMETMPT_init = new TH1F( "m_dphiMETMPT_init", "m_dphiMETMPT_init;DeltaPhiMETMPT", 100, 0, 4);
-  m_dphiMETMPT_aftercut = new TH1F( "m_dphiMETMPT_aftercut", "m_dphiMETMPT_aftercut;DeltaPhiMETMPT", 100, 0, 4);
+  m_dphiMETMPT_init = new TH1F( "m_dphiMETMPT_init", "m_dphiMETMPT_init;#Delta #Phi", 100, 0, 4);
+  m_dphiMETMPT_aftercut = new TH1F( "m_dphiMETMPT_aftercut", "m_dphiMETMPT_aftercut;#Delta #Phi", 100, 0, 4);
 
   m_nSigJets_init = new TH1F( "m_nSigJets_init", "m_nnSigJets_init;nb_Jets", 10, 0, 10);
   m_nSigJets_aftercut = new TH1F( "m_nSigJets_aftercut", "m_nSigJets_aftercut;nb_Jets", 10, 0, 10);
 
-  m_SigJet1_pt_init = new TH1F( "m_SigJet1_pt_init", "m_SigJet1_pt_init;pt_Signal1", 10, 0, 300e3);
-  m_SigJet1_pt_aftercut = new TH1F( "m_SigJet1_pt_aftercut", "m_SigJet1_pt_aftercut;pt_Signal1", 10, 0, 300e3);
+  m_SigJet1_pt_init = new TH1F( "m_SigJet1_pt_init", "m_SigJet1_pt_init;p_{T}", 10, 0, 300e3);
+  m_SigJet1_pt_aftercut = new TH1F( "m_SigJet1_pt_aftercut", "m_SigJet1_pt_aftercut;p_{T}", 10, 0, 300e3);
 
   m_nSigVetoJets_init = new TH1F( "m_nSigVetoJets_init", "m_nSigVetoJets_init;nb_Jets", 10, 0, 10);
   m_nSigVetoJets_aftercut = new TH1F( "m_nSigVetoJets_aftercut", "m_nSigVetoJets_aftercut;nb_Jets", 10, 0, 10);
 
-  m_sumpt12_init = new TH1F( "m_sumpt12_init", "m_sumpt12_init;sum_pt1pt2", 100, 0, 500e3);
-  m_sumpt12_aftercut = new TH1F( "m_sumpt12_aftercut", "m_sumpt12_aftercut;sum_pt1pt2", 100, 0, 500e3);
+  m_sumpt12_init = new TH1F( "m_sumpt12_init", "m_sumpt12_init;#sum pt1pt2", 100, 0, 500e3);
+  m_sumpt12_aftercut = new TH1F( "m_sumpt12_aftercut", "m_sumpt12_aftercut;#sum pt1pt2", 100, 0, 500e3);
 
-  m_sumpt123_init = new TH1F( "m_sumpt123_init", "m_sumpt123_init;sum_pt1pt2pt3", 100, 0, 600e3);
-  m_sumpt123_aftercut = new TH1F( "m_sumpt123_aftercut", "m_sumpt123_aftercut;sum_pt1pt2pt3", 100, 0, 600e3);
+  m_sumpt123_init = new TH1F( "m_sumpt123_init", "m_sumpt123_init;#sum pt1pt2pt3", 100, 0, 600e3);
+  m_sumpt123_aftercut = new TH1F( "m_sumpt123_aftercut", "m_sumpt123_aftercut;#sum pt1pt2pt3", 100, 0, 600e3);
 
-  m_dphiMETdijet_init = new TH1F( "m_dphiMETdijet_init", "m_dphiMETdijet_init;DeltaPhiMETdijet", 100, 0, 4);
-  m_dphiMETdijet_aftercut = new TH1F( "m_dphiMETdijet_aftercut", "m_dphiMETdijet_aftercut;DeltaPhiMETdijet", 100, 0, 4);
+  m_dphiMETdijet_init = new TH1F( "m_dphiMETdijet_init", "m_dphiMETdijet_init;#Delta#Phi", 100, 0, 4);
+  m_dphiMETdijet_aftercut = new TH1F( "m_dphiMETdijet_aftercut", "m_dphiMETdijet_aftercut;#Delta#Phi", 100, 0, 4);
 
-  m_dRSigJet1SigJet2_init = new TH1F( "m_dRSigJet1SigJet2_init", "m_dRSigJet1SigJet2_init;DeltaRsig1sig2", 100, 0, 4.5);
-  m_dRSigJet1SigJet2_aftercut = new TH1F( "m_dRSigJet1SigJet2_aftercut", "m_dRSigJet1SigJet2_aftercut;DeltaRsig1sig2", 100, 0, 4.5);
+  m_dRSigJet1SigJet2_init = new TH1F( "m_dRSigJet1SigJet2_init", "m_dRSigJet1SigJet2_init;#Delta R", 100, 0, 4.5);
+  m_dRSigJet1SigJet2_aftercut = new TH1F( "m_dRSigJet1SigJet2_aftercut", "m_dRSigJet1SigJet2_aftercut;#Delta R", 100, 0, 4.5);
 
-  m_massdijet_init = new TH1F( "m_massdijet_init", "m_massdijet_init;massDijet", 100, 0, 250);
-  m_massdijet_aftercut = new TH1F( "m_massdijet_aftercut", "m_massdijet_aftercut;massDijet", 100, 0, 250);
+  m_massdijet_init = new TH1F( "m_massdijet_init", "m_massdijet_init;M", 100, 0, 250);
+  m_massdijet_aftercut = new TH1F( "m_massdijet_aftercut", "m_massdijet_aftercut;M", 100, 0, 250);
   //______________________________________________________________________________________________________________________________________
 
-  m_cutflow = new TH1F("cutflow", "cutflow", 20, -0.5, 19.5);
+  m_cutflow = new TH1F("cutflow", "cutflow", 13, 0, 13);
   m_cutflow->SetDirectory(0);
+
+  TAxis* xaxis = m_cutflow->GetXaxis();
+  xaxis->SetBinLabel(1, "initial");
+  xaxis->SetBinLabel(2, "0 isVH electron");
+  xaxis->SetBinLabel(3, "0 isVH muon");
+  xaxis->SetBinLabel(4, "MET >= 120 GeV");
+  xaxis->SetBinLabel(5, "MPT > 30 GeV");
+  xaxis->SetBinLabel(6, "|#Delta #phi (MET,MPT)| < 90");
+  xaxis->SetBinLabel(7, ">= 2 Signal Jets");
+  xaxis->SetBinLabel(8, "p_{T}(first jet) >= 45 GeV");
+  xaxis->SetBinLabel(9, "=< 3 (Signal ou Forrward) Jets");
+  xaxis->SetBinLabel(10, "#sum p_{T} >= (120 où 150) GeV");
+  xaxis->SetBinLabel(11, "#Delta #phi (MET, dijet) > 140");
+  xaxis->SetBinLabel(12, "#Delta R (first jet, second jet) < 2");
+  xaxis->SetBinLabel(13, "m(dijet) #in [90,150]");
 
   //Histogramm list for categorizing 
   m_kinVariables.addHisto("jet1pT;p_{T} [GeV]", {100, 0, 300});
@@ -101,13 +116,15 @@ void VHAnalysis::InitializeHistograms() {
   m_truthCompo.addHisto("compo;Categories", categories);
 
   //Histo Comparaison bJet / bQuark
-  m_bquark_pt = new TH1F("m_bquark_pt", "m_bquark_pt", 100, 0, 300e3);
-  m_bquark_eta = new TH1F("m_bquark_eta", "m_bquark_eta", 100, 0, 4);
-  m_bquark_phi = new TH1F("m_bquark_phi", "m_bquark_phi", 100, 0, 4);
-  m_DeltaR_bQuarkbJet = new TH1F("m_DeltaR_bQuarkbJet", "m_DeltaR_bQuarkbJet", 100, 0, 4);
-  m_DeltaR_bQuarkSecondJet = new TH1F("m_DeltaR_bQuarkSecondJet", "m_DeltaR_bQuarkSecondJet", 100, 0, 4);
-  m_rapprtPT_bJetbQuarkMATCH = new TH1F("m_rapprtPT_bJetbQuarkMATCH", "m_rapprtPT_bJetbQuarkMATCH", 100, 0, 4);
-  m_DeltaR_bQuarkThirdJet = new TH1F("m_DeltaR_bQuarkThirdJet", "m_DeltaR_bQuarkThirdJet", 100, 0, 4);
+  m_bquark_pt = new TH1F("m_bquark_pt", "m_bquark_pt;p_{T} [GeV]", 100, 0, 300e3);
+  m_bquark_eta = new TH1F("m_bquark_eta", "m_bquark_eta;#eta", 100, 0, 4);
+  m_bquark_match_pt = new TH1F("m_bquark_match_pt", "m_bquark_match_pt;p_{T} [GeV]", 100, 0, 300e3);
+  m_bquark_match_eta = new TH1F("m_bquark_match_eta", "m_bquark_match_eta;#eta", 100, 0, 4);
+  m_bquark_phi = new TH1F("m_bquark_phi", "m_bquark_phi; #phi [rad]", 100, 0, 4);
+  m_DeltaR_bQuarkbJet = new TH1F("m_DeltaR_bQuarkbJet", "m_DeltaR_bQuarkbJet;#Delta R", 100, 0, 4);
+  m_DeltaR_bQuarkSecondJet = new TH1F("m_DeltaR_bQuarkSecondJet", "m_DeltaR_bQuarkSecondJet;#Delta R", 100, 0, 4);
+  m_rapprtPT_bJetbQuarkMATCH = new TH1F("m_rapprtPT_bJetbQuarkMATCH", "m_rapprtPT_bJetbQuarkMATCH;#frac{p_{T_{bjet}}}{p_{T_{bquark}}}", 100, 0, 4);
+  m_DeltaR_bQuarkThirdJet = new TH1F("m_DeltaR_bQuarkThirdJet", "m_DeltaR_bQuarkThirdJet;#Delta R", 100, 0, 4);
 }
 
 void VHAnalysis::Loop() {
@@ -380,6 +397,8 @@ void VHAnalysis::WriteHistos() {
   m_bquark_pt->Write();
   m_bquark_eta->Write();
   m_bquark_phi->Write();
+  m_bquark_match_pt->Write();
+  m_bquark_match_eta->Write();
   m_DeltaR_bQuarkbJet->Write();
   m_DeltaR_bQuarkSecondJet->Write();
   m_rapprtPT_bJetbQuarkMATCH->Write();
@@ -428,6 +447,7 @@ void VHAnalysis::StudyJetQuark(EvtInfo& evt) {
   bquark1.SetPxPyPzE(mc_px->at(3), mc_py->at(3), mc_pz->at(3), mc_E->at(3));
   bquark2.SetPxPyPzE(mc_px->at(5), mc_py->at(5), mc_pz->at(5), mc_E->at(5));
 
+  if(evt.has3j()) { return; }
   if(evt.type1==5 and evt.type2==5) { return; }
   if(evt.type1!=5 and evt.type2!=5) { return; }
 
@@ -459,15 +479,17 @@ void VHAnalysis::StudyJetQuark(EvtInfo& evt) {
  
   m_bquark_pt->Fill(bquark.Pt(), evt.total_weight());
   m_bquark_eta->Fill(bquark.Eta(), evt.total_weight());
+  m_bquark_match_pt->Fill(bquark_match.Pt(), evt.total_weight());
+  m_bquark_match_eta->Fill(bquark_match.Eta(), evt.total_weight());
   m_bquark_phi->Fill(bquark.Phi(), evt.total_weight());
   m_DeltaR_bQuarkbJet->Fill(bquark.DeltaR(bJet), evt.total_weight());
   m_DeltaR_bQuarkSecondJet->Fill(bquark.DeltaR(ndJet), evt.total_weight());
   m_rapprtPT_bJetbQuarkMATCH->Fill( (bJet.Pt())*1000/(bquark_match.Pt()) , evt.total_weight());
 
-  if(evt.has3j()) { 
-    rdJet = evt.jet3;
-    m_DeltaR_bQuarkThirdJet->Fill(bquark.DeltaR(rdJet), evt.total_weight());
-  }
+  // if(evt.has3j()) { 
+    // rdJet = evt.jet3;
+    // m_DeltaR_bQuarkThirdJet->Fill(bquark.DeltaR(rdJet), evt.total_weight());
+  // }
 
 }
 

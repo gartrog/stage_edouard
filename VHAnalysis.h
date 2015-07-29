@@ -78,6 +78,8 @@ class VHAnalysis : public VHNtuple {
     //Histo Comparaison bJet / bQuark
     TH1F* m_bquark_pt;
     TH1F* m_bquark_eta;
+    TH1F* m_bquark_match_pt;
+    TH1F* m_bquark_match_eta;
     TH1F* m_bquark_phi;
     TH1F* m_DeltaR_bQuarkbJet;
     TH1F* m_DeltaR_bQuarkSecondJet;
