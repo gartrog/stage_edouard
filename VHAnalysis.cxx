@@ -160,6 +160,7 @@ void VHAnalysis::ProcessEntry(Long64_t ientry) {
 
   if(eve_mc_chan == 110351) { evt.mc_weight = 15.91425781; }
   if(eve_mc_chan == 110401) { evt.mc_weight = 0.1913586573; }
+  if(eve_mc_chan == 161849) { evt.mc_weight = 0.0050175; }
 
   bool res = ApplySelection(evt);
 
@@ -171,9 +172,9 @@ void VHAnalysis::ProcessEntry(Long64_t ientry) {
 
   PlotVariables(evt, "btag_");
 
-  StudyMCLeptons(evt);
+  //StudyMCLeptons(evt);
 
-  StudyJetQuark(evt);
+  //StudyJetQuark(evt);
 }
 
 bool VHAnalysis::ApplySelection(EvtInfo& evt) {
