@@ -9,8 +9,10 @@
 int main(int argc, char** argv) {
   //File f("smallttbar.root");
   File f("ttbar.root");
+  //File f("ZHvv125.root");
   TTree* tree = f.getObject<TTree>("tupletest");
   VHAnalysis analysis(tree, "output.root");
+  //VHAnalysis analysis(tree, "outputHiggs.root");
   analysis.Loop();
   analysis.WriteHistos();
 

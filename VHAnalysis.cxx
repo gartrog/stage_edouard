@@ -111,6 +111,9 @@ void VHAnalysis::InitializeHistograms() {
 
   m_truthLeptons.addHisto("leppT;p_{T} [GeV]", {40, 0, 100});
   m_truthLeptons.addHisto("lepeta;#eta", {40, -5, 5});
+  m_truthLeptons.addHisto("DRj1;#Delta R(l, j1)", {40, 0, 5});
+  m_truthLeptons.addHisto("DRj2;#Delta R(l, j1)", {40, 0, 5});
+  m_truthLeptons.addHisto("DRj3;#Delta R(l, j1)", {40, 0, 5});
 
   std::vector<std::string> categories {"FullHad", "e", "mu", "tau", "e-e", "e-mu", "mu-mu", "e-tau", "mu-tau", "tau-tau"};
   m_truthCompo.addHisto("compo;Categories", categories);
@@ -172,7 +175,7 @@ void VHAnalysis::ProcessEntry(Long64_t ientry) {
 
   PlotVariables(evt, "btag_");
 
-  //StudyMCLeptons(evt);
+  StudyMCLeptons(evt);
 
   //StudyJetQuark(evt);
 }
@@ -429,6 +432,11 @@ void VHAnalysis::StudyMCLeptons(EvtInfo& evt) {
     m_truthLeptons.setCut(truth.prefix(truth.leps_types.at(i)));
     m_truthLeptons.fillCurrent("leppT", truth.leps[i].Pt(), evt.total_weight());
     m_truthLeptons.fillCurrent("lepeta", truth.leps[i].Eta(), evt.total_weight());
+    m_truthLeptons.fillCurrent("DRj1", truth.leps[i].DeltaR(evt.jet1), evt.total_weight());
+    m_truthLeptons.fillCurrent("DRj2", truth.leps[i].DeltaR(evt.jet2), evt.total_weight());
+    if(evt.has3j()) {
+      m_truthLeptons.fillCurrent("DRj3", truth.leps[i].DeltaR(evt.jet3), evt.total_weight());
+    }
   }
 
   m_truthCompo.fill("all_compo", truth.category(), evt.total_weight());
