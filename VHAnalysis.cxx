@@ -177,7 +177,7 @@ void VHAnalysis::ProcessEntry(Long64_t ientry) {
 
   StudyMCLeptons(evt);
 
-  //StudyJetQuark(evt);
+  StudyJetQuark(evt);
 }
 
 bool VHAnalysis::ApplySelection(EvtInfo& evt) {
@@ -201,6 +201,8 @@ bool VHAnalysis::ApplySelection(EvtInfo& evt) {
   m_nmuons_init->Fill(nmuons);
   if(nLooseMuons > 0) { return false; }
   m_nmuons_aftercut->Fill(nmuons);
+
+  if(ntaus > 0) { return false; }
 
   m_cutflow->Fill(2, evt.mc_weight);
 
