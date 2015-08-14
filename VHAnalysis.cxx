@@ -138,6 +138,7 @@ void VHAnalysis::Loop() {
    fChain->SetBranchStatus("electrons_isVHL*",1);
    fChain->SetBranchStatus("n*",1);
    fChain->SetBranchStatus("mc*",1);
+   fChain->SetBranchStatus("tracks*",1);
    fChain->SetBranchStatus("trackmet*",1);
    fChain->SetBranchStatus("met*",1);
    fChain->SetBranchStatus("eve_mc*",1);

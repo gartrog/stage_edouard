@@ -33,6 +33,12 @@ public :
    std::vector<int>     *jets_truth;
    std::vector<bool>    *jets_isVetoJet;
    std::vector<bool>    *jets_isSignal;
+   Int_t           ntracks;
+   std::vector<float>   *tracks_E;
+   std::vector<float>   *tracks_pt;
+   std::vector<float>   *tracks_phi;
+   std::vector<float>   *tracks_eta;
+   std::vector<int>     *tracks_truth;
    Int_t           nfatJets;
    std::vector<float>   *fatJets_E;
    std::vector<float>   *fatJets_pt;
@@ -113,6 +119,12 @@ public :
    TBranch        *b_jets_truth;   //!
    TBranch        *b_jets_isVetoJet;   //!
    TBranch        *b_jets_isSignal;   //!
+   TBranch        *b_ntracks;   //!
+   TBranch        *b_tracks_E;   //!
+   TBranch        *b_tracks_pt;   //!
+   TBranch        *b_tracks_phi;   //!
+   TBranch        *b_tracks_eta;   //!
+   TBranch        *b_tracks_truth;   //!
    TBranch        *b_nfatJets;   //!
    TBranch        *b_fatJets_E;   //!
    TBranch        *b_fatJets_pt;   //!
@@ -256,6 +268,11 @@ void VHNtuple::Init(TTree *tree)
    jets_truth = 0;
    jets_isVetoJet = 0;
    jets_isSignal = 0;
+   tracks_E = 0;
+   tracks_pt = 0;
+   tracks_phi = 0;
+   tracks_eta = 0;
+   tracks_truth = 0;
    fatJets_E = 0;
    fatJets_pt = 0;
    fatJets_phi = 0;
@@ -317,6 +334,12 @@ void VHNtuple::Init(TTree *tree)
    fChain->SetBranchAddress("jets_truth", &jets_truth, &b_jets_truth);
    fChain->SetBranchAddress("jets_isVetoJet", &jets_isVetoJet, &b_jets_isVetoJet);
    fChain->SetBranchAddress("jets_isSignal", &jets_isSignal, &b_jets_isSignal);
+   fChain->SetBranchAddress("ntracks", &ntracks, &b_ntracks);
+   fChain->SetBranchAddress("tracks_E", &tracks_E, &b_tracks_E);
+   fChain->SetBranchAddress("tracks_pt", &tracks_pt, &b_tracks_pt);
+   fChain->SetBranchAddress("tracks_phi", &tracks_phi, &b_tracks_phi);
+   fChain->SetBranchAddress("tracks_eta", &tracks_eta, &b_tracks_eta);
+   fChain->SetBranchAddress("tracks_truth", &tracks_truth, &b_tracks_truth);
    fChain->SetBranchAddress("nfatJets", &nfatJets, &b_nfatJets);
    fChain->SetBranchAddress("fatJets_E", &fatJets_E, &b_fatJets_E);
    fChain->SetBranchAddress("fatJets_pt", &fatJets_pt, &b_fatJets_pt);
