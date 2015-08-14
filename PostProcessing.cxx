@@ -3,10 +3,11 @@
 #include <TH2F.h>
 #include <TH1F.h>
 #include <iostream>
+#include <iomanip>
 
 
 double JetsFlavor(const std::string& name) {
-  File f("output.root");
+  File f("outputR20.root");
   TH2F* h = f.getObject<TH2F>(name);
 
   int bin_bb, bin_bc, bin_bl, bin_bt, bin_other;
@@ -57,7 +58,15 @@ double JetsFlavor(const std::string& name) {
   std::cout<< "bl = " << (nbl/ntot)*100 << "%" << std::endl;
   std::cout<< "bt = " << (nbt/ntot)*100 << "%" << std::endl;
   std::cout<< "other = " << (nother/ntot)*100 << "%" << std::endl;
-  std::cout << "" << std::endl;
+  std::cout << std::endl;
+  std::cout<< std::setprecision(1) << std::fixed 
+    << "& "<< (nbb/ntot)*100
+    << "& "<< (nbc/ntot)*100
+    << "& "<< (nbl/ntot)*100
+    << "& "<< (nbt/ntot)*100
+    << "& "<< (nother/ntot)*100
+    << " \\\\" << std::endl;
+  std::cout << std::endl;
   std::cout<< "**************************************************************" << std::endl;
   std::cout << "" << std::endl;
 
@@ -66,7 +75,7 @@ double JetsFlavor(const std::string& name) {
   
 
 double Sorting(const std::string& name) {
-  File f("output.root");
+  File f("outputR20.root");
   TH1F* h = f.getObject<TH1F>(name);
 
   float ntot=0, nHad=0, nSemLep=0, nLep=0, n_e=0, n_mu=0, n_tau=0, n_ee=0, n_emu=0, n_mumu=0, n_etau=0, n_mutau=0, n_tautau=0;
@@ -103,8 +112,22 @@ double Sorting(const std::string& name) {
   std::cout<< "n_mumu = " << (n_mumu/ntot)*100 << "%" << std::endl;
   std::cout<< "n_etau = " << (n_etau/ntot)*100 << "%" << std::endl;
   std::cout<< "n_mutau = " << (n_mutau/ntot)*100 << "%" << std::endl;
-  std::cout<< "n_tautau = " << (n_tautau/ntot)*100 << "%" << std::endl;
-  std::cout<< "" << std::endl;
+  std::cout<< "n_tautau = " << (n_tautau/ntot)*100 << "%" << std::endl << std::endl;
+  std::cout<< std::setprecision(1) << std::fixed 
+    << "& \\multicolumn{3}{c|}{"<<(nSemLep/ntot)*100
+    <<"}& \\multicolumn{6}{c|}{" <<(nLep/ntot)*100 << "}  \\\\\\cline{2-10}" << std::endl;
+  std::cout<< std::setprecision(1) << std::fixed
+    << " & " << (n_e/ntot)*100
+    << " & " << (n_mu/ntot)*100
+    << " & " << (n_tau/ntot)*100
+    << " & " << (n_ee/ntot)*100
+    << " & " << (n_emu/ntot)*100
+    << " & " << (n_mumu/ntot)*100
+    << " & " << (n_etau/ntot)*100
+    << " & " << (n_mutau/ntot)*100
+    << " & " << (n_tautau/ntot)*100
+    << " \\\\\\hline" << std::endl;
+  std::cout<< std::endl;
   std::cout<< "**************************************************************" << std::endl;
   std::cout<< "" << std::endl;
   
