@@ -128,6 +128,7 @@ void VHAnalysis::InitializeHistograms() {
   m_DeltaR_bQuarkSecondJet = new TH1F("m_DeltaR_bQuarkSecondJet", "m_DeltaR_bQuarkSecondJet;#Delta R", 100, 0, 4);
   m_rapprtPT_bJetbQuarkMATCH = new TH1F("m_rapprtPT_bJetbQuarkMATCH", "m_rapprtPT_bJetbQuarkMATCH;#frac{p_{T_{bjet}}}{p_{T_{bquark}}}", 100, 0, 4);
   m_DeltaR_bQuarkThirdJet = new TH1F("m_DeltaR_bQuarkThirdJet", "m_DeltaR_bQuarkThirdJet;#Delta R", 100, 0, 4);
+  m_bquark_DRTrack = new TH1F("m_bquark_minDRTrkJet", "m_bquark_minDRTrkJet;#Delta R(b, trk jet)", 100, 0, 10);
 }
 
 void VHAnalysis::Loop() {
@@ -410,6 +411,7 @@ void VHAnalysis::WriteHistos() {
   m_DeltaR_bQuarkSecondJet->Write();
   m_rapprtPT_bJetbQuarkMATCH->Write();
   m_DeltaR_bQuarkThirdJet->Write();
+  m_bquark_DRTrack->Write();
 
   m_outfile->Close();
 }
@@ -497,6 +499,21 @@ void VHAnalysis::StudyJetQuark(EvtInfo& evt) {
   m_DeltaR_bQuarkbJet->Fill(bquark.DeltaR(bJet), evt.total_weight());
   m_DeltaR_bQuarkSecondJet->Fill(bquark.DeltaR(ndJet), evt.total_weight());
   m_rapprtPT_bJetbQuarkMATCH->Fill( (bJet.Pt())*1000/(bquark_match.Pt()) , evt.total_weight());
+
+  float minDR = 666;
+  TLorentzVector matchedTrkJet;
+  for(int i=0; i<ntracks; i++) {
+    if(tracks_pt->at(i) > 5000) {
+      TLorentzVector trkJet;
+      trkJet.SetPtEtaPhiE(tracks_pt->at(i), tracks_eta->at(i), tracks_phi->at(i), tracks_E->at(i));
+      float localDR = bquark.DeltaR(trkJet);
+      if(localDR < minDR) {
+        minDR = localDR;
+        matchedTrkJet = trkJet;
+      }
+    }
+  }
+  m_bquark_DRTrack->Fill(minDR, evt.total_weight());
 
   // if(evt.has3j()) { 
     // rdJet = evt.jet3;

@@ -85,6 +85,7 @@ class VHAnalysis : public VHNtuple {
     TH1F* m_DeltaR_bQuarkSecondJet;
     TH1F* m_rapprtPT_bJetbQuarkMATCH;
     TH1F* m_DeltaR_bQuarkThirdJet;
+    TH1F* m_bquark_DRTrack;
     //_____________________________________
 
 
